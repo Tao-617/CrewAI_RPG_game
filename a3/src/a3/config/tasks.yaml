@@ -1,0 +1,178 @@
+game_story_writing_task:
+  description: >
+    Develop an engaging and immersive storyline for {game_title}.
+    The story should include world-building, character backstories, and major plot points.
+    Ensure the narrative aligns with the game's genre and themes.
+  expected_output: >
+    A comprehensive game storyline document outlining the main plot,
+    key characters, conflicts, and player progression.
+  agent: game_story_writer
+
+
+ 
+game_character_design_task:
+  description: >
+    Create detailed and unique character designs for {game_title} based on the game story and world setting.
+    Each character should have a distinct appearance, personality, and backstory that fit seamlessly into the game.
+    The final design should be structured into prompts for AI-assisted visualization, alongside textual descriptions 
+    of their role and interactions in the world.
+  expected_output: >
+    A structured character design document containing:
+    - Character visual prompts (for AI-generated images)
+    - Personality traits, abilities, and roles
+    - Background story and motivations
+    - Interaction style with other characters and the player
+  agent: RoleDesigner
+  context: [game_story_writing_task]
+ 
+
+game_environment_design_task:
+  description: >
+    Design immersive and contextually appropriate environments for {game_title}.
+    Utilize the game’s storyline and character designs to create key iconic locations 
+    that serve as the primary settings throughout the game.
+    
+    - Develop a structured "world map" consisting of major locations where the player 
+      encounters key characters.
+    - Assign specific scenes to particular locations based on the storyline.
+    - Ensure that the environmental details support the emotional and narrative context of the game.
+    
+    Read the existing environment drawing functions from {background_path} and update them 
+    (e.g., switch_background function) with improved scene rendering logic and additional 
+    environmental details.
+    
+    Follow the JavaScript coding style and drawing function conventions used in {background_path}. 
+    Ensure that the scene designs are simple, realistic, and easy to implement using geometric shapes. 
+    Provide **clear and detailed comments** in the code to assist the Graphics Engineer 
+    in implementing the drawer functions efficiently.
+  expected_output: >
+    - A structured environment design document that outlines major locations in the game world.
+    - Scene descriptions, detailing the characters present and key visual elements.
+    - Updated JavaScript drawing function implementations following the format of {background_path}, 
+      ensuring smooth integration into the game.
+  agent: ScenesDesigner
+  context: [game_story_writing_task, game_character_design_task]
+
+
+game_scene_programming_task:
+  description: >
+    Implement scene rendering functions for {game_title} by integrating environment design data.
+    Read scene descriptions from the game_environment_design_task output and implement the 
+    corresponding scene rendering functions. Follow the coding style from {drawer_path} 
+    to ensure the functions are formatted in JavaScript in a structured and reusable manner.
+    
+    - Ensure that each scene rendering function is implemented within the `Drawer` class.
+    - Utilize the `ctx` (context-based) drawing method to render geometric shapes, 
+      backgrounds, and scene-specific elements dynamically.
+    - Optimize the rendering process by carefully distinguishing between elements that 
+      should be **preloaded** (static elements) and elements that should be **updated every frame** (dynamic elements).
+    - Maintain a **consistent and structured code style** with `drawer_path` to ensure easy integration 
+      and maintainability.
+  expected_output: >
+    A structured JavaScript script containing the `Drawer` class with well-implemented 
+    scene rendering functions. Each function should be dynamically generated based on 
+    game_environment_design_task outputs and follow the formatting conventions from {drawer_path}.
+  agent: GraphicsEngineer
+  context: [game_environment_design_task]
+
+game_dialogue_writing_task:
+  description: >
+    Create immersive and contextually appropriate dialogues for {game_title}.
+    Ensure character dialogues align with their personality, backstory, and the overall storyline.
+    The dialogues should enhance player engagement, narrative depth, and provide branching choices
+    where applicable. 
+
+    - Read character descriptions from game_character_design_task to ensure each dialogue matches 
+      the character's personality and backstory.
+    - Read {dialog_path} to understand the existing dialogue structure and maintain consistency 
+      with the predefined JSON format.
+    - Generate dialogues that are **linked to specific scenes**, ensuring that each scene has 
+      a corresponding dialogue set.
+    - Make sure the dialogues reflect the **emotional tone and context** of the scene, keeping 
+      the language natural and fitting to the character's personality.
+    - Use informal and engaging language where appropriate, avoiding overly formal phrasing.
+  expected_output: >
+    A structured script containing dialogues for key interactions,
+    formatted as a JSON object based on {dialog_path} template, making it suitable for 
+    direct implementation in the game engine.
+  agent: DialogDesigner
+  context: [game_story_writing_task, game_character_design_task, game_environment_design_task]
+
+
+game_dialogue_control_task:
+  description: >
+    Implement and refine core game mechanics for {game_title}.
+    Integrate dialogues by updating the `triggerDialogue` function using 
+    the output from game_dialogue_writing_task and the structure defined in {DiaControl_path}.
+    Ensure that the dialogue control system properly handles branching choices, 
+    timing, and scene transitions while maintaining fluid interaction with game mechanics.
+  expected_output: >
+    A game mechanics script containing:
+    - Detailed implementations for player controls, physics interactions, and gameplay loops.
+    - An updated `triggerDialogue` function that correctly references the generated dialogues 
+      from game_dialogue_writing_task.
+    - A structured dialogue management system that aligns with {DiaControl_path}, 
+      ensuring smooth character interactions.
+  agent: DialogController
+  context: [game_dialogue_writing_task]
+
+game_test_background:
+  description: >
+    Perform in-depth testing of the scene design and scene implementation results in {game_title}.
+    Ensure that:
+    - The scene descriptions from game_environment_design_task align with the implemented rendering functions in game_scene_programming_task.
+    - The implemented drawing functions correctly reflect the intended environment.
+    - The interactions between the environment, characters, and dialogues are seamless.
+    - The code structure is clean, modular, and maintainable.
+    Identify inconsistencies, missing elements, or performance issues and generate a structured test report.
+  expected_output: >
+    A comprehensive test report evaluating:
+    - The correctness of implemented scene rendering functions.
+    - The usability, performance, and completeness of the graphics code.
+    - The integrity and consistency of function calls between game_scene_programming_task and game_environment_design_task.
+    The report should include detailed feedback, reproducible test cases, and suggestions for improvements.
+  agent: GameTester
+  context: [game_scene_programming_task, game_environment_design_task]
+
+
+game_graphics_code_update_task:
+  description: >
+    Analyze feedback from game_test_background and refine the scene rendering functions for {game_title}.
+    Review the test report and address any missing elements, incorrect function calls, 
+    or performance issues in the original scene rendering script.
+    If only minor fixes are needed, update only the relevant sections and save the changes 
+    into a new versioned file without duplicating the entire previous output.
+  expected_output: >
+    A refined JavaScript script containing updates to the scene rendering functions 
+    based on game_test_background. Only the necessary modifications are included, 
+    and the updates are saved in a separate file to track changes.
+  agent: GraphicsEngineer
+  context: [game_test_background]
+
+game_scene_design_update_task:
+  description: >
+    Review the scene rendering code and refine the scene design implementation for {game_title}.
+    Analyze the feedback from game_test_background and the updates made by game_graphics_code_update_task.
+    Ensure that all scene elements are correctly defined, visually coherent, and properly structured.
+    Validate that the function calls align with the expected structure and update any missing or incorrect details.
+    Save only the necessary updates in a separate file to maintain version tracking.
+  expected_output: >
+    A revised scene design script with necessary updates, fixing issues found in testing,
+    and ensuring correct integration with the Graphics Engineer's rendering functions.
+    The updates should be saved in a new versioned file.
+  agent: ScenesDesigner
+  context: [game_environment_design_task, game_graphics_code_update_task, game_test_background]
+
+# game_ui_design_task:
+#   description: >
+#     Design an intuitive and visually appealing UI for {game_title}.
+#     The UI should enhance the player's experience with clear navigation,
+#     responsive interactions, and a cohesive visual style.
+#   expected_output: >
+#     A UI/UX document containing wireframes, design mockups,
+#     and explanations of user interface interactions.
+#   agent: game_ui_designer
+#   tools: []
+#   context: [game_story_writing_task]
+
+

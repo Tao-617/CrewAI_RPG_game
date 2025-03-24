@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport" />
+    <title>Generated Game</title>
+    <style>
+      body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Orbitron', sans-serif;
+            background-color: #1a1a2e;
+            color: #ffffff;
+        }
+        .screen {
+            display: none;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+        .dialog-box {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            background: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+            color: white;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000; /* 确保在最上层 */
+        }
+
+        button {
+            background: linear-gradient(135deg, #283c86 0%, #45a247 100%);
+            border: 2px solid #fff;
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            text-transform: uppercase;
+            text-align: center;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            padding: 12px 30px;
+            margin: 20px auto 0;
+            display: block;
+            width: 215.15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #45a247 0%, #283c86 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        #game-title {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            color: #e94560;
+        }
+        #game-controls {
+            position: fixed;
+            bottom: 200px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        #mobile-controls {
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between; /* Distribute buttons to the left and right */
+            padding: 0 10px;
+            z-index: 300;
+        }
+
+        /* Left-side movement buttons */
+        #left-controls {
+            display: flex;
+            gap: 10px;
+            user-select: none; /* Prevent selection */
+            touch-action: manipulation; /* Optimize touch response */
+            -webkit-touch-callout: none; /* Prevent long-press menu */
+        }
+
+        /* Right-side action buttons */
+        #right-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Button styles */
+        #mobile-controls button {
+            font-size: 24px;
+            padding: 15px 20px;
+            border: none;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* Button click effect */
+        #mobile-controls button:active {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Adaptation for small screens */
+        @media screen and (max-width: 768px) {
+            #mobile-controls button {
+                font-size: 20px;
+                padding: 12px 18px;
+            }
+        }
+
+
+        #hud {
+            position: fixed;
+            top: 100px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: rgb(255, 255, 255);
+            padding: 10px;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            z-index: 100;
+        }
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: calc(100% - 100px);
+            overflow: hidden;
+            background-color: #0f3460;
+            border: 2px solid #e94560;
+            box-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+        }
+        #game-screen {
+            background: none;
+        }
+        #instructions-screen {
+            z-index: 200;
+        }
+        #instructions-screen.overlay {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        #instructions-screen .container {
+            background: #1a1a2e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+        }
+        @media (max-width: 600px) {
+            #game-title {
+                font-size: 2em;
+            }
+            button {
+                width: 80%;
+                font-size: 16px;
+            }
+            #game-controls button {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+  </head>
+  <body>
+    <div id="dialog-box" class="dialog-box" style="display: none;">
+        <p id="dialog-content">加载中...</p>
+    </div>
+    
+    <div id="game-controls">
+        <button id="game-menu-button">Menu</button>
+        <button id="game-restart-button">Restart</button>
+        <button id="game-instructions-button">Instructions</button>
+    </div>
+    <div id="mobile-controls" style="display: none;">
+        <!-- Left-side movement buttons -->
+        <div id="left-controls">
+            <button id="left-button">←</button>
+            <button id="right-button">→</button>
+        </div>
+    
+        <!-- Right-side action buttons -->
+        <div id="right-controls">
+            <button id="jump-button">↑</button>
+            <button id="attack-button">⚔</button>
+        </div>
+    </div>    
+	<!-- Use HUD for Score, High Score, and Other Game Information -->
+    <div id="hud"></div>
+
+    <div id="start-menu-screen" class="active screen">
+        <div class="container">
+            <h1 id="game-title">my RPG</h1>
+            <button id="play-button">Play</button>
+            <button id="settings-button">Settings</button>
+            <button id="instructions-button">Instructions</button>
+        </div>
+    </div>
+
+    <div id="settings-screen" class="screen">
+        <div class="container">
+            <h2>Settings</h2>
+            <!-- Add settings options here -->
+            <button id="settings-back-button">Back</button>
+        </div>
+    </div>
+
+    <div id="instructions-screen" class="screen">
+        <div class="container">
+            <h2>Instructions</h2>
+    
+            <h3>How to Play:</h3>
+            <ul>
+                <li>Defeat all enemies to earn points.</li>
+                <li>Use your attacks to eliminate enemies before they hit you.</li>
+                <li>Avoid enemy projectiles to stay alive.</li>
+                <li>Survive as long as possible to achieve a high score.</li>
+            </ul>
+    
+            <h3>Controls:</h3>
+            <ul>
+                <li><strong>Move Left:</strong> Press "A"</li>
+                <li><strong>Move Right:</strong> Press "D"</li>
+                <li><strong>Jump:</strong> Press "K"</li>
+                <li><strong>Attack:</strong> Press "J"</li>
+            </ul>
+    
+            <button id="instructions-back-button">Back</button>
+        </div>
+    </div>
+    
+
+    <div id="game-screen" class="screen">
+        <div id="game-container">
+            <canvas id="gameCanvas"></canvas>
+        </div>
+    </div>
+
+    <div id="game-over-screen" class="screen">
+        <div class="container">
+            <div id="game-over-message"></div>
+            <button id="play-again-button">Play Again</button>
+            <button id="main-menu-button">Main Menu</button>
+        </div>
+    </div>
+    <audio autoplay="" id="background-music" loop="">
+        <source src="./sounds/battle_theme_5s.wav" type="audio/wav" />
+    </audio>
+    <audio id="start-game-sound">
+        <source src="./sounds/battle_theme_5s.wav" type="audio/wav" />
+    </audio>
+    <!--Extra audio tags for sound effects-->
+	
+	<!--You will create your own scripts in the following files-->  
+    <script src="./js/dialogData.js"></script>  
+    <script type="module" src="./js/logic.js"></script> 
+    <script type="module">
+        import { GameLogic } from "./js/logic.js";
+        document.addEventListener('DOMContentLoaded', () => {
+        class GameUI {
+          constructor() {
+            this.startMenuScreen = document.getElementById('start-menu-screen');
+            this.settingsScreen = document.getElementById('settings-screen');
+            this.instructionsScreen = document.getElementById('instructions-screen');
+            this.gameContainer = document.getElementById('game-screen');
+            this.gameOverScreen = document.getElementById('game-over-screen');
+			this.gameControls = document.getElementById('game-controls');
+			this.hud = document.getElementById('hud');
+          };
+		  
+          swapToScreen(screen) {
+            this.startMenuScreen.classList.remove('active');
+            this.settingsScreen.classList.remove('active');
+            this.instructionsScreen.classList.remove('active');
+            this.gameContainer.classList.remove('active');
+            this.gameOverScreen.classList.remove('active');
+            screen.classList.add('active');			
+			
+			if (screen.id === 'game-screen') {
+				this.hud.style.display = 'block';
+				this.gameControls.style.display = 'block';
+			} else {
+				this.hud.style.display = 'none';
+				this.gameControls.style.display = 'none';
+			}
+          };
+		  
+          startGame() {
+            const startGameSound = document.getElementById('start-game-sound');
+            this.swapToScreen(this.gameContainer);
+            startGameSound.play();
+            // Your start game code here;
+          }
+		  
+          endGame() {
+            const endGameSound = document.getElementById('end-game-sound');
+            this.swapToScreen(this.gameOverScreen);
+            endGameSound.play();
+            // Your end game code here;
+          }
+		  
+          mainMenu() {
+            this.swapToScreen(this.startMenuScreen);
+          }
+		  
+          playAgain() {
+            this.swapToScreen(this.gameContainer);
+          }
+		  
+          settings() {
+            this.swapToScreen(this.settingsScreen);
+          }
+		  
+          instructions() {
+            this.swapToScreen(this.instructionsScreen);
+          }		  
+          
+          // Your UI functions here;
+		  
+        }
+       
+        class Game {
+          constructor() {
+            this.ui = new GameUI();
+            this.logic = new GameLogic();
+            this.lastFrameTime = 0;
+            this.updateInterval = 1000 / 60;
+			this.isPaused = false;
+			this.animationFrameId = null;
+            }
+          prepareGame() {
+            const gameContainer = document.getElementById('game-screen');
+            // Prepare game container DOM elements here;            
+            // Connect DOM element to game logic or game ui accordingly;
+            this.assignButtons();
+          }
+          startGame() {
+            this.ui.startGame();
+            // Start game logic here;
+            this.gameLoop();
+            // this.updateInterval = /* Your desired update interval */;
+            
+			if(this.animationFrameId)
+			{
+				cancelAnimationFrame(this.animationFrameId);
+			}
+			this.animationFrameId = requestAnimationFrame(this.gameLoop.bind(this));
+          }
+          updateGame() {
+            // Update game logic here;
+            this.logic.update();
+          }
+          resetGame() {
+            // Reset game logic here;	
+            this.logic.restartGame();
+			this.isPaused = false;
+			cancelAnimationFrame(this.animationFrameId);
+          }
+		  pause() {
+			this.isPaused = true;
+			cancelAnimationFrame(this.animationFrameId);
+		  }
+		  resume() {
+			this.isPaused = false;
+			this.gameLoop();
+		  }
+          gameLoop(timestamp) {
+
+            const deltaTime = timestamp - this.lastFrameTime;
+            
+            const backgroundSound = document.getElementById('background-music');
+            backgroundSound.play();
+            if (deltaTime > this.updateInterval) {
+              this.updateGame();
+              this.lastFrameTime = timestamp;
+            }
+            if(this.animationFrameId)
+			{
+				cancelAnimationFrame(this.animationFrameId);
+			}
+            if (this.logic.done || this.isPaused) return;
+			this.animationFrameId = requestAnimationFrame(this.gameLoop.bind(this));
+          }
+          isMobileDevice() {
+                return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            }
+          setupMobileControls() {
+                console.log("Mobile controls activated");
+                // Get buttons
+                const leftButton = document.getElementById("left-button");
+                const rightButton = document.getElementById("right-button");
+                const jumpButton = document.getElementById("jump-button");
+                const attackButton = document.getElementById("attack-button");
+
+                // Move left
+                leftButton.addEventListener("touchstart", () => this.logic.keys.a = true);
+                leftButton.addEventListener("touchend", () => this.logic.keys.a = false);
+
+                // Move right
+                rightButton.addEventListener("touchstart", () => this.logic.keys.d = true);
+                rightButton.addEventListener("touchend", () => this.logic.keys.d = false);
+
+                // Jump
+                jumpButton.addEventListener("touchstart", () => {
+                    if (!this.logic.player.isJumping) {
+                        this.logic.player.isJumping = true;
+                        this.logic.player.velocityY = -this.canvas.height * 0.02;
+                    }
+                });
+
+                // Attack
+                attackButton.addEventListener("touchstart", () => {
+                    if (!this.logic.getPlayer().isAttacking) {
+                        this.logic.keys.j = true;
+                        this.logic.getPlayer().isAttacking = true;
+                        // Generate projectile
+                        let projectile = {
+                            x: this.logic.getPlayer().facingRight ? this.logic.getPlayer().x + this.logic.player.width : this.logic.player.x,
+                            y: this.logic.getPlayer().y + this.logic.getPlayer().height / 2,
+                            speed: this.logic.getPlayer().facingRight ? this.logic.canvas.width * 0.01 : -this.logic.canvas.width * 0.01
+                        };
+                        this.logic.projectiles.push(projectile);
+                        setTimeout(() => { this.logic.getPlayer().isAttacking = false; }, 300);
+                    }
+                });
+
+                // ✅ Ensure virtual buttons are visible
+                document.getElementById("mobile-controls").style.display = "flex";
+
+            }
+
+          assignButtons() {
+            const playButton = document.getElementById('play-button');
+			const settingsButton = document.getElementById('settings-button');
+			const instructionsButton = document.getElementById('instructions-button');
+			const playAgainButton = document.getElementById('play-again-button');
+			const mainMenuButtons = document.querySelectorAll('#game-over-main-menu-button, #settings-back-button, #instructions-back-button');
+			const gameMenuButton = document.getElementById('game-menu-button');
+			const gameRestartButton = document.getElementById('game-restart-button');
+			const gameInstructionsButton = document.getElementById('game-instructions-button');
+
+			playButton.addEventListener('click', this.startGame.bind(this));
+			settingsButton.addEventListener('click', this.ui.settings.bind(this.ui));
+			instructionsButton.addEventListener('click', this.ui.instructions.bind(this.ui));
+			playAgainButton.addEventListener('click', this.resetGame.bind(this));
+			mainMenuButtons.forEach(button => button.addEventListener('click', () => {
+				this.ui.mainMenu();
+			}));
+			gameMenuButton.addEventListener('click', () => {
+				this.ui.mainMenu();
+			});
+			gameRestartButton.addEventListener('click', this.startGame.bind(this));
+			gameInstructionsButton.addEventListener('click', () => {
+						this.pause();						
+						this.ui.swapToScreen(this.ui.instructionsScreen);
+						document.getElementById('instructions-back-button').addEventListener('click', () => {
+							this.ui.swapToScreen(this.ui.gameContainer);
+							this.resume();
+						}, { once: true });
+					});
+            
+			// Your button event listeners here
+            document.addEventListener('keydown', (event) => this.logic.handleKeyDown(event));
+            document.addEventListener('keyup', (event) => this.logic.handleKeyUp(event));
+            
+            
+            //Dialog Box
+            const dialogBox = document.getElementById('dialog-box');
+            dialogBox.addEventListener('click', () => {
+                if (this.logic.isPaused && this.logic.dialogDisplayed) {
+                    this.logic.currentLineIndex++;
+                    this.logic.showDialogLine();
+                }
+            });
+
+
+            // ✅ Add virtual buttons only on mobile devices
+            if (this.isMobileDevice()) {
+                this.setupMobileControls();
+            }
+
+
+          }
+        }
+        const game = new Game();
+        game.prepareGame();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport" />
+    <title>Generated Game</title>
+    <style>
+      body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Orbitron', sans-serif;
+            background-color: #1a1a2e;
+            color: #ffffff;
+        }
+        .screen {
+            display: none;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+        .dialog-box {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            background: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+            color: white;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000; /* 确保在最上层 */
+        }
+
+        button {
+            background: linear-gradient(135deg, #283c86 0%, #45a247 100%);
+            border: 2px solid #fff;
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            text-transform: uppercase;
+            text-align: center;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            padding: 12px 30px;
+            margin: 20px auto 0;
+            display: block;
+            width: 215.15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #45a247 0%, #283c86 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        #game-title {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            color: #e94560;
+        }
+        #game-controls {
+            position: fixed;
+            bottom: 200px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        #mobile-controls {
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between; /* Distribute buttons to the left and right */
+            padding: 0 10px;
+            z-index: 300;
+        }
+
+        /* Left-side movement buttons */
+        #left-controls {
+            display: flex;
+            gap: 10px;
+            user-select: none; /* Prevent selection */
+            touch-action: manipulation; /* Optimize touch response */
+            -webkit-touch-callout: none; /* Prevent long-press menu */
+        }
+
+        /* Right-side action buttons */
+        #right-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Button styles */
+        #mobile-controls button {
+            font-size: 24px;
+            padding: 15px 20px;
+            border: none;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* Button click effect */
+        #mobile-controls button:active {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Adaptation for small screens */
+        @media screen and (max-width: 768px) {
+            #mobile-controls button {
+                font-size: 20px;
+                padding: 12px 18px;
+            }
+        }
+
+
+        #hud {
+            position: fixed;
+            top: 100px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: rgb(255, 255, 255);
+            padding: 10px;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            z-index: 100;
+        }
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: calc(100% - 100px);
+            overflow: hidden;
+            background-color: #0f3460;
+            border: 2px solid #e94560;
+            box-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+        }
+        #game-screen {
+            background: none;
+        }
+        #instructions-screen {
+            z-index: 200;
+        }
+        #instructions-screen.overlay {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        #instructions-screen .container {
+            background: #1a1a2e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+        }
+        @media (max-width: 600px) {
+            #game-title {
+                font-size: 2em;
+            }
+            button {
+                width: 80%;
+                font-size: 16px;
+            }
+            #game-controls button {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+  </head>
+  <body>
+    <div id="dialog-box" class="dialog-box" style="display: none;">
+        <p id="dialog-content">加载中...</p>
+    </div>
+    
+    <div id="game-controls">
+        <button id="game-menu-button">Menu</button>
+        <button id="game-restart-button">Restart</button>
+        <button id="game-instructions-button">Instructions</button>
+    </div>
+    <div id="mobile-controls" style="display: none;">
+        <!-- Left-side movement buttons -->
+        <div id="left-controls">
+            <button id="left-button">←</button>
+            <button id="right-button">→</button>
+        </div>
+    
+        <!-- Right-side action buttons -->
+        <div id="right-controls">
+            <button id="jump-button">↑</button>
+            <button id="attack-button">⚔</button>
+        </div>
+    </div>    
+	<!-- Use HUD for Score, High Score, and Other Game Information -->
+    <div id="hud"></div>
+
+    <div id="start-menu-screen" class="active screen">
+        <div class="container">
+            <h1 id="game-title">my RPG</h1>
+            <button id="play-button">Play</button>
+            <button id="settings-button">Settings</button>
+            <button id="instructions-button">Instructions</button>
+        </div>
+    </div>
+
+    <div id="settings-screen" class="screen">
+        <div class="container">
+            <h2>Settings</h2>
+            <!-- Add settings options here -->
+            <button id="settings-back-button">Back</button>
+        </div>
+    </div>
+
+    <div id="instructions-screen" class="screen">
+        <div class="container">
+            <h2>Instructions</h2>
+    
+            <h3>How to Play:</h3>
+            <ul>
+                <li>Defeat all enemies to earn points.</li>
+                <li>Use your attacks to eliminate enemies before they hit you.</li>
+                <li>Avoid enemy projectiles to stay alive.</li>
+                <li>Survive as long as possible to achieve a high score.</li>
+            </ul>
+    
+            <h3>Controls:</h3>
+            <ul>
+                <li><strong>Move Left:</strong> Press "A"</li>
+                <li><strong>Move Right:</strong> Press "D"</li>
+                <li><strong>Jump:</strong> Press "K"</li>
+                <li><strong>Attack:</strong> Press "J"</li>
+            </ul>
+    
+            <button id="instructions-back-button">Back</button>
+        </div>
+    </div>
+    
+
+    <div id="game-screen" class="screen">
+        <div id="game-container">
+            <canvas id="gameCanvas"></canvas>
+        </div>
+    </div>
+
+    <div id="game-over-screen" class="screen">
+        <div class="container">
+            <div id="game-over-message"></div>
+            <button id="play-again-button">Play Again</button>
+            <button id="main-menu-button">Main Menu</button>
+        </div>
+    </div>
+    <audio autoplay="" id="background-music" loop="">
+        <source src="./sounds/battle_theme_5s.wav" type="audio/wav" />
+    </audio>
+    <audio id="start-game-sound">
+        <source src="./sounds/battle_theme_5s.wav" type="audio/wav" />
+    </audio>
+    <!--Extra audio tags for sound effects-->
+	
+	<!--You will create your own scripts in the following files-->  
+    <script src="js/dialogData.js"></script>  
+    <script src="js/background.js"></script>  
+    <script src="js/dialogCtrl.js"></script>  
+    <script src="js/player.js"></script>  
+    <script src="js/HUD.js"></script>  
+    <script src="js/enemyManager.js"></script>  
+    <script src="js/drawer.js"></script>  
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        class GameUI {
+          constructor() {
+            this.startMenuScreen = document.getElementById('start-menu-screen');
+            this.settingsScreen = document.getElementById('settings-screen');
+            this.instructionsScreen = document.getElementById('instructions-screen');
+            this.gameContainer = document.getElementById('game-screen');
+            this.gameOverScreen = document.getElementById('game-over-screen');
+			this.gameControls = document.getElementById('game-controls');
+			this.hud = document.getElementById('hud');
+          };
+		  
+		  
+          swapToScreen(screen) {
+            this.startMenuScreen.classList.remove('active');
+            this.settingsScreen.classList.remove('active');
+            this.instructionsScreen.classList.remove('active');
+            this.gameContainer.classList.remove('active');
+            this.gameOverScreen.classList.remove('active');
+            screen.classList.add('active');			
+			
+			if (screen.id === 'game-screen') {
+				this.hud.style.display = 'block';
+				this.gameControls.style.display = 'block';
+			} else {
+				this.hud.style.display = 'none';
+				this.gameControls.style.display = 'none';
+			}
+          };
+		  
+          startGame() {
+            const startGameSound = document.getElementById('start-game-sound');
+            this.swapToScreen(this.gameContainer);
+            startGameSound.play();
+            // Your start game code here;
+          }
+		  
+          endGame() {
+            const endGameSound = document.getElementById('end-game-sound');
+            this.swapToScreen(this.gameOverScreen);
+            endGameSound.play();
+            // Your end game code here;
+          }
+		  
+          mainMenu() {
+            this.swapToScreen(this.startMenuScreen);
+          }
+		  
+          playAgain() {
+            this.swapToScreen(this.gameContainer);
+          }
+		  
+          settings() {
+            this.swapToScreen(this.settingsScreen);
+          }
+		  
+          instructions() {
+            this.swapToScreen(this.instructionsScreen);
+          }		  
+          
+          // Your UI functions here;
+		  
+        }
+        class GameLogic {
+            constructor() {
+                this.restartGame = this.restartGame.bind(this);
+                this.canvas = document.getElementById("gameCanvas");
+                this.canvas.style.position = 'relative';
+                this.ctx = this.canvas.getContext("2d");
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+
+                this.player = new Player(this.canvas);
+                this.spritesheet = new Image();
+                this.spritesheet.src = "images/player_walk.png"; // Player character spritesheet
+
+                this.frameIndex = 0;  // Current frame index
+                this.frameWidth = 128; // Single frame width (adjust based on image)
+                this.frameHeight = 235; // Single frame height
+                this.totalFrames = 4; // Total frames in the spritesheet
+                this.frameSpeed = 8; // Number of frames before switching to the next image
+                this.frameCounter = 0;
+
+                this.enemySpritesheet = new Image();
+                this.enemySpritesheet.src = "images/enemy.png"; // Enemy character spritesheet
+
+                this.enemyFrameIndex = 0; // Current animation frame for enemy
+                this.enemyFrameWidth = 128; // Enemy frame width (adjust based on image)
+                this.enemyFrameHeight = 235; // Enemy frame height
+                this.enemyTotalFrames = 4; // Total frames in enemy spritesheet
+                this.enemyFrameSpeed = 8; // Number of frames before switching to next enemy frame
+                this.enemyFrameCounter = 0;
+
+                this.done = false; // Stop the game loop
+                this.keys = { a: false, d: false, s: false, k: false, j: false };
+
+                this.grassPatches = this.generateGrass();
+                this.clouds = this.generateClouds();
+                this.enemies = [];
+                this.projectiles = [];
+                this.enemyProjectiles = [];
+
+                this.enemySpawnInterval = 3000;
+                this.enemySpawner = setInterval(this.spawnEnemy.bind(this), this.enemySpawnInterval);
+                this.distanceTraveled = 0; // Track the distance traveled by the player
+                this.maxDistance = this.canvas.width * 5; // Set the maximum distance; the game ends when reached
+
+                this.showDialog = false; // Whether to show dialogue box
+                this.dialogScenes = dialogScenes; // Load dialogue data
+                this.isSceneCompleted = this.initializeSceneCompletion(dialogScenes);
+                this.currentLineIndex = 0; // Track current dialogue index
+                this.currentSpeaker = ''; // Current speaker
+                this.isPaused = false; // Control whether the game is paused
+                this.currentScene = 'start'; // Current dialogue scene
+
+                this.backgroundState = "day"; // Initial background: daytime
+            }
+                
+
+                
+               
+               
+            
+                showDialogLine() {
+                    const dialogBox = document.getElementById('dialog-box');
+                    const dialogContent = document.getElementById('dialog-content');
+
+                    let playerImage = document.getElementById('player-image');
+                    let enemyImage = document.getElementById('enemy-image');
+
+                    // **Create player (left-side character)**
+                    if (!playerImage) {
+                        playerImage = new Image();
+                        playerImage.id = 'player-image';
+                        playerImage.src = 'images/player.png';
+                        playerImage.alt = 'Player';
+                        playerImage.style.position = 'absolute';
+                        playerImage.style.left = this.canvas.width * 0.01 + 'px';  // **Left-side 5% position**
+                        playerImage.style.bottom = this.canvas.height * 0.1 + 'px'; // **Bottom 10%**
+                        playerImage.style.width = this.canvas.width * 0.3 + 'px'; // **10% canvas width**
+                        playerImage.style.height = 'auto';
+                        document.body.appendChild(playerImage);
+                    }
+
+                    // **Create enemy (right-side character)**
+                    if (!enemyImage) {
+                        enemyImage = new Image();
+                        enemyImage.id = 'enemy-image';
+                        enemyImage.src = 'images/boss.png';
+                        enemyImage.alt = 'Enemy';
+                        enemyImage.style.position = 'absolute';
+                        enemyImage.style.right = this.canvas.width * 0.01 + 'px';  // **Right-side 5% position**
+                        enemyImage.style.bottom = this.canvas.height * 0.1 + 'px'; // **Bottom 10%**
+                        enemyImage.style.width = this.canvas.width * 0.3 + 'px'; // **10% canvas width**
+                        enemyImage.style.height = 'auto';
+                        document.body.appendChild(enemyImage);
+                    }
+                    
+                    // **Ensure the canvas is relatively positioned to prevent misalignment**
+                    if (!this.canvas.style.position) {
+                        this.canvas.style.position = 'relative';
+                    }
+
+                    // **Check if the current dialogue scene exists**
+                    if (!this.dialogScenes[this.currentScene]) {
+                        console.error("❌ Current dialogue scene does not exist:", this.currentScene);
+                        return;
+                    }
+
+                    let dialogLines = this.dialogScenes[this.currentScene]; // Retrieve the current dialogue lines
+
+                    if (this.currentLineIndex < dialogLines.length) {
+                        // **Read the current dialogue line**
+                        const { speaker, text } = dialogLines[this.currentLineIndex];
+
+                        // **Clear the dialogue box and update text**
+                        dialogContent.innerHTML = '';
+                        const textNode = document.createElement('span');
+                        textNode.textContent = text;
+                        dialogContent.appendChild(textNode);
+
+                        // **Switch character highlight**
+                        if (speaker === 'player') {
+                            playerImage.style.opacity = "1";   // Highlight player
+                            enemyImage.style.opacity = "0.3"; // Dim enemy
+                        } else {
+                            playerImage.style.opacity = "0.3"; // Dim player
+                            enemyImage.style.opacity = "1";   // Highlight enemy
+                        }
+
+                        // **Show dialogue box**
+                        dialogBox.style.display = 'block';
+                        this.currentLineIndex++;
+
+                    } else {
+                        // **End of dialogue, hide dialogue box**
+                        dialogBox.style.display = 'none';
+                        this.isPaused = false;
+                        // **Remove character images**
+                        if (playerImage) playerImage.remove();
+                        if (enemyImage) enemyImage.remove();
+                    }
+                }
+
+                // **🚀 Switch dialogue and background**
+                switchDialog(sceneName) {
+                    if (dialogScenes[sceneName] && !this.isSceneCompleted[sceneName]) {
+                        this.currentScene = sceneName;
+                        this.switchBackground(sceneName); // **Change background when dialogue occurs**
+                        this.currentLineIndex = 0;
+                        this.isSceneCompleted[sceneName] = true;
+                        this.showDialogLine();
+                    }
+                }
+
+                // **Draw the moon**
+                drawMoon() { 
+                    const ctx = this.ctx;
+                    const moonX = this.canvas.width * 0.8;
+                    const moonY = this.canvas.height * 0.1;
+                    const moonRadius = this.canvas.width * 0.04;
+
+                    // 绘制主月亮（浅黄色）
+                    ctx.fillStyle = "#F0E68C"; 
+                    ctx.beginPath();
+                    ctx.arc(moonX, moonY, moonRadius, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // 使用 destination-out 扣掉月亮的一部分，形成弯月轮廓
+                    ctx.globalCompositeOperation = "destination-out"; 
+                    ctx.beginPath();
+                    ctx.arc(moonX - moonRadius * 0.4, moonY, moonRadius * 0.8, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // 恢复默认合成模式
+                    ctx.globalCompositeOperation = "source-over";
+
+                    // 在扣除区域绘制深蓝色小圆，形成另一种颜色的覆盖
+                    ctx.fillStyle = "#191970"; 
+                    ctx.beginPath();
+                    ctx.arc(moonX - moonRadius * 0.4, moonY, moonRadius * 0.8, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+
+                // **Draw rain**
+                drawRain() {
+                    this.ctx.fillStyle = "rgba(173, 216, 230, 0.6)";
+                    for (let i = 0; i < 50; i++) {
+                        let x = Math.random() * this.canvas.width;
+                        let y = Math.random() * this.canvas.height;
+                        this.ctx.fillRect(x, y, 2, 10);
+                    }
+                }
+
+
+            // Your game logic here;
+            spawnEnemy() {
+                let enemy = {
+                    x: this.canvas.width + Math.random() * this.canvas.width * 0.1,
+                    y: this.canvas.height * 0.6,
+                    width: this.canvas.height * 0.2,
+                    height: this.canvas.height * 0.2,
+                    speed: this.canvas.width * 0.002,
+                    attackCooldown: 0,
+                    health: 2 
+                };
+                this.enemies.push(enemy);
+            }
+           
+
+            // Draw enemies
+            drawEnemies() {
+                this.enemies.forEach(enemy => {
+                    // Calculate the current frame
+                    this.enemyFrameCounter++;
+                    if (this.enemyFrameCounter >= this.enemyFrameSpeed) {
+                        this.enemyFrameIndex = (this.enemyFrameIndex + 1) % this.enemyTotalFrames;
+                        this.enemyFrameCounter = 0;
+                    }
+
+                    let frameX = this.enemyFrameIndex * this.enemyFrameWidth;
+
+                    this.ctx.save(); // Save the current drawing state
+                    this.ctx.scale(-1, 1); // Flip horizontally
+                    this.ctx.drawImage(
+                        this.enemySpritesheet,
+                        frameX, 150, // Crop from spritesheet (x, y)
+                        this.enemyFrameWidth, this.enemyFrameHeight, // Single frame size
+                        -enemy.x - enemy.width, enemy.y, // **Adjust X position when flipping**
+                        enemy.width, enemy.height // Target drawing size
+                    );
+                    this.ctx.restore(); // Restore drawing state
+
+                    // Move enemy
+                    let addSpeed = (this.keys.d && this.player.x >= (this.canvas.width * 1 / 3)) ? this.player.speed : 0;
+                    enemy.x -= enemy.speed + addSpeed + this.distanceTraveled / 1000;
+
+                    // Generate enemy projectiles
+                    if (enemy.attackCooldown <= 0) {
+                        this.enemyProjectiles.push({
+                            x: enemy.x,
+                            y: enemy.y + enemy.height / 2,
+                            speed: -this.canvas.width * 0.007
+                        });
+                        enemy.attackCooldown = Math.random() * 100 + 50;
+                    } else {
+                        enemy.attackCooldown--;
+                    }
+                });
+            }
+
+
+            // Draw enemy projectiles (black triangle)
+            drawEnemyProjectiles() {
+                this.ctx.fillStyle = "#000000";
+                this.enemyProjectiles.forEach((proj, index) => {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(proj.x, proj.y);
+                    this.ctx.lineTo(proj.x + this.canvas.width * 0.01, proj.y + this.canvas.width * 0.005);
+                    this.ctx.lineTo(proj.x + this.canvas.width * 0.01, proj.y - this.canvas.width * 0.005);
+                    this.ctx.closePath();
+                    this.ctx.fill();
+                    let addSpeed = (this.keys.d && this.player.x >= (this.canvas.width * 1 / 3)) ? this.player.speed : 0;
+                    proj.x += proj.speed - addSpeed - this.distanceTraveled / 1000;
+
+                    // Remove if out of screen
+                    if (proj.x < 0) {
+                        this.enemyProjectiles.splice(index, 1);
+                    }
+                });
+            }
+
+           // Draw the sun
+            drawSun(x, y, radius) {
+                this.ctx.fillStyle = "#FFD700";
+                this.ctx.beginPath();
+                this.ctx.arc(x, y, radius, 0, Math.PI * 2);
+                this.ctx.fill();
+            }
+
+            // Generate grass patches
+            generateGrass() {
+                let patches = [];
+                for (let i = 0; i < 50; i++) {
+                    let x = Math.random() * this.canvas.width;
+                    let y = this.canvas.height * 0.6 + Math.random() * this.canvas.height * 0.4;
+                    patches.push({ x, y });
+                }
+                return patches;
+            }
+
+            // Draw blue projectiles
+            drawProjectiles() {
+                this.ctx.fillStyle = "#0000FF";
+                this.projectiles.forEach((projectile, index) => {
+                    this.ctx.beginPath();
+                    this.ctx.arc(projectile.x, projectile.y, this.canvas.width * 0.01, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    
+                    projectile.x += projectile.speed;
+
+                    // Remove if out of screen
+                    if (projectile.x > this.canvas.width || projectile.x < 0) {
+                        this.projectiles.splice(index, 1);
+                    }
+                });
+            }
+           // Generate cloud data
+            generateClouds() {
+                let patches = [];
+                for (let i = 0; i < 10; i++) {
+                    let x = Math.random() * this.canvas.width;
+                    let y = Math.random() * this.canvas.height * 0.5;
+                    let width = Math.random() * this.canvas.width * 0.1;
+                    let height = width * 0.5;
+                    patches.push({ x, y, width, height });
+                }
+                return patches;
+            }
+
+            // Draw grass (triangle)
+            drawGrass(x, y) {
+                this.ctx.fillStyle = "#228B22";
+                this.ctx.beginPath();
+                this.ctx.moveTo(x, y);
+                this.ctx.lineTo(x - this.canvas.width * 0.005, y + this.canvas.width * 0.02);
+                this.ctx.lineTo(x + this.canvas.width * 0.005, y + this.canvas.width * 0.02);
+                this.ctx.closePath();
+                this.ctx.fill();
+            }
+
+            // Draw cloud (ellipse)
+            drawCloud(x, y, width, height) {
+                this.ctx.fillStyle = "#FFFFFF";
+                this.ctx.beginPath();
+                this.ctx.ellipse(x, y, width, height, 0, 0, Math.PI * 2);
+                this.ctx.fill();
+            }
+
+            // Draw health bar
+            drawHealthBar() {
+                this.ctx.fillStyle = "#FF0000";
+                this.ctx.fillRect(this.player.x, this.player.y - this.canvas.height * 0.02, this.player.width * (this.player.health / 100), this.canvas.height * 0.01);
+                this.ctx.strokeStyle = "#000000";
+                this.ctx.strokeRect(this.player.x, this.player.y - this.canvas.height * 0.02, this.player.width, this.canvas.height * 0.01);
+            }
+
+            // Draw score
+            drawScore() {
+                this.ctx.fillStyle = "#000000";
+                this.ctx.font = "30px Arial";
+                this.ctx.fillText("Score: " + this.player.score, 20, 60);
+            }
+
+
+            updateHUD() {
+                const hud = document.getElementById("hud");
+                hud.innerHTML = `
+                    <div>Health: ${this.player.health}%</div>
+                    <div>Score: ${this.player.score}</div>
+                    <div>Distance: ${Math.round(this.distanceTraveled)} / ${this.maxDistance}</div>
+                    <div>High Score: ${localStorage.getItem("highScore") || 0}</div>
+                `;
+            }
+
+
+            // Check for collisions
+            checkCollisions() {
+                this.projectiles.forEach((proj, pIndex) => {
+                    this.enemies.forEach((enemy, eIndex) => {
+                        if (
+                            proj.x < enemy.x + enemy.width &&
+                            proj.x + this.canvas.width * 0.01 > enemy.x &&
+                            proj.y < enemy.y + enemy.height &&
+                            proj.y + this.canvas.width * 0.01 > enemy.y
+                        ) {
+                            // Remove enemy and projectile
+                            this.enemies.splice(eIndex, 1);
+                            this.projectiles.splice(pIndex, 1);
+                            // Increase health
+                            this.player.health = Math.min(100, this.player.health + 5);
+                            this.player.score += 1;
+                            // Update high score
+                            let highScore = localStorage.getItem("highScore") || 0;
+                            if (this.player.score > highScore) 
+                                localStorage.setItem("highScore", this.player.score);
+                            // Update enemy spawn timer
+                            clearInterval(this.enemySpawner); // Clear previous timer
+                            this.enemySpawnInterval = Math.max(500, 3000 - this.player.score * 100); // Update new interval
+                            this.enemySpawner = setInterval(this.spawnEnemy.bind(this), this.enemySpawnInterval); // Start new timer
+                        }
+                    });
+                });
+                this.enemyProjectiles.forEach((proj, epIndex) => {
+                    if (
+                        proj.x < this.player.x + this.player.width &&
+                        proj.x + this.canvas.width * 0.01 > this.player.x &&
+                        proj.y < this.player.y + this.player.height &&
+                        proj.y + this.canvas.width * 0.01 > this.player.y
+                    ) {
+                        // Remove enemy projectile
+                        this.enemyProjectiles.splice(epIndex, 1);
+                        // Decrease health
+                        this.player.health = Math.max(0, this.player.health - 30);
+                        // If player health reaches 0, call `playerDeath()`
+                        if (this.player.health <= 0) {
+                            this.switchDialog('lose');
+                            this.playerDeath();
+                        }
+                    }
+                });
+            }
+
+            // Control movement of grass and clouds
+            moveObjects() {
+                if (this.keys.d && this.player.x >= (this.canvas.width * 1 / 3)) {
+                    this.player.x = this.canvas.width * 1 / 3;
+                    // Increase distance traveled when moving right
+                    this.distanceTraveled += this.player.speed;
+
+                    this.grassPatches.forEach(grass => {
+                        grass.x -= this.player.speed;
+                        if (grass.x < -this.canvas.width * 0.1) {
+                            grass.x = this.canvas.width + Math.random() * 50;
+                            grass.y = this.canvas.height * 0.6 + Math.random() * this.canvas.height * 0.4;
+                        }
+                    });
+                    this.clouds.forEach(cloud => {
+                        cloud.x -= this.player.speed * 0.5;
+                        if (cloud.x < -this.canvas.width * 0.1) {
+                            cloud.x = this.canvas.width + Math.random() * this.canvas.width * 0.05 + this.canvas.width * 0.1;
+                            cloud.y = Math.random() * this.canvas.height * 0.3;
+                        }
+                    });
+                } else if (this.keys.d) {
+                    this.player.x += this.player.speed;
+                } else if (this.keys.a && this.player.x > 0) {
+                    this.player.x -= this.player.speed;
+                }
+                // If distance reaches 10000, the game ends
+                if (this.distanceTraveled >= this.maxDistance) {
+                    this.reachGoal();
+                }
+            }
+
+            // Handle reaching the goal
+            reachGoal() {
+                this.switchDialog('win');
+                console.log("Player has reached the goal!");
+                this.done = true; // Stop game loop
+                clearInterval(this.enemySpawner); // Stop enemy spawning
+
+                // Get high score
+                let highScore = localStorage.getItem("highScore") || 0;
+                let newHighScore = false;
+
+                // Check if new high score is reached
+                if (this.player.score == highScore) {
+                    localStorage.setItem("highScore", this.player.score);
+                    newHighScore = true;
+                }
+
+                // Display "You Win" screen
+                setTimeout(() => {
+                    let winDiv = document.createElement("div");
+                    winDiv.style.position = "absolute";
+                    winDiv.style.top = "50%";
+                    winDiv.style.left = "50%";
+                    winDiv.style.transform = "translate(-50%, -50%)";
+                    winDiv.style.background = "rgba(0, 0, 0, 0.8)";
+                    winDiv.style.color = "white";
+                    winDiv.style.padding = "20px";
+                    winDiv.style.textAlign = "center";
+                    winDiv.style.fontSize = "24px";
+
+                    // Congratulations message
+                    let message = newHighScore ? `<p>🎉 Congratulations! New High Score! 🎉</p>` : "";
+
+                    winDiv.innerHTML = `
+                        You Win!<br>
+                        Distance: ${this.distanceTraveled}<br>
+                        <br>Score: ${this.player.score}<br>
+                        ${message} <!-- Congratulations message -->
+                        <button id='restart-button'>Restart</button>
+                    `;
+
+                    document.body.appendChild(winDiv);
+
+                    document.getElementById("restart-button").addEventListener("click", this.restartGame.bind(this));
+                }, 500);
+            }
+
+            // Update player state
+            updatePlayer() {
+                if (this.player.isJumping) {
+                    this.player.y += this.player.velocityY;
+                    this.player.velocityY += this.player.gravity;
+                    if (this.player.y >= this.canvas.height * 0.6) {
+                        this.player.y = this.canvas.height * 0.6;
+                        this.player.isJumping = false;
+                    }
+                }
+            }
+
+            // Handle player death
+            playerDeath() {
+                console.log("Player has died!");
+                
+                this.player.health = 0; // Ensure health does not go below 0
+                
+                clearInterval(this.enemySpawner); // Stop enemy spawning
+
+                // Make player "fall down"
+                this.player.y += this.player.height * 0.9;
+                this.player.height = this.player.height / 10;
+
+                // Display game over screen
+                this.showGameOverScreen();
+                this.done = true;
+            }
+
+            drawPlayer() {
+                if (this.keys.a || this.keys.d) {
+                    this.frameCounter++;
+                    if (this.frameCounter >= this.frameSpeed) {
+                        this.frameIndex = (this.frameIndex + 1) % this.totalFrames; // Loop walk animation
+                        this.frameCounter = 0;
+                    }
+                } else {
+                    this.frameIndex = 0; // Show first frame when standing still
+                }
+
+                let frameX = this.frameIndex * this.frameWidth;
+
+                this.ctx.save(); // Save current state
+
+                if (!this.player.facingRight) {
+                    this.ctx.scale(-1, 1); // Mirror flip
+                    this.ctx.drawImage(
+                        this.spritesheet,
+                        frameX, 150,
+                        this.frameWidth, this.frameHeight,
+                        -this.player.x - this.player.width, this.player.y, // Adjust x coordinate
+                        this.player.width, this.player.height
+                    );
+                } else {
+                    this.ctx.drawImage(
+                        this.spritesheet,
+                        frameX, 150,
+                        this.frameWidth, this.frameHeight,
+                        this.player.x, this.player.y,
+                        this.player.width, this.player.height
+                    );
+                }
+
+                this.ctx.restore(); // Restore state
+            }
+
+            initializeSceneCompletion(dialogScenes) {
+                let sceneCompleted = {};
+                for (let scene in dialogScenes) {
+                    sceneCompleted[scene] = false; // Initially set all to false
+                }
+                return sceneCompleted;
+            }
+
+            // Show game over screen
+            showGameOverScreen() {
+                setTimeout(() => {
+                    let highScore = localStorage.getItem("highScore") || 0;
+                    let newHighScore = this.player.score == highScore;
+
+                    if (newHighScore) {
+                        localStorage.setItem("highScore", this.player.score); // Update high score
+                    }
+
+                    let message = newHighScore ? "<br>🎉 Congratulations! New High Score! 🎉<br>" : "";
+
+                    let gameOverDiv = document.createElement("div");
+                    gameOverDiv.style.position = "absolute";
+                    gameOverDiv.style.top = "50%";
+                    gameOverDiv.style.left = "50%";
+                    gameOverDiv.style.transform = "translate(-50%, -50%)";
+                    gameOverDiv.style.background = "rgba(0, 0, 0, 0.8)";
+                    gameOverDiv.style.color = "white";
+                    gameOverDiv.style.padding = "20px";
+                    gameOverDiv.style.textAlign = "center";
+                    gameOverDiv.style.fontSize = "24px";
+                    gameOverDiv.innerHTML = `
+                        Game Over!<br>Score: ${this.player.score}<br>
+                        ${message}
+                        <button id='restart-button'>Restart</button>
+                    `;
+                    document.body.appendChild(gameOverDiv);
+
+                    document.getElementById("restart-button").addEventListener("click", this.restartGame.bind(this));
+                }, 500);
+            }
+
+            // Restart game
+            restartGame() {
+                location.reload();
+            }
+
+            update() {
+                if (this.isPaused) {
+                    return; // Skip update logic when the game is paused
+                }
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.drawBackground();
+                this.moveObjects();
+                this.updatePlayer();
+                this.drawPlayer();
+                this.drawProjectiles();
+                this.drawEnemies();
+                this.drawEnemyProjectiles();
+                this.checkCollisions();
+                this.drawHealthBar();
+                this.updateHUD();
+
+                // **Trigger pre-battle dialogue**
+                if (this.distanceTraveled >= this.maxDistance / 5 && !this.isSceneCompleted["intro"]) {
+                    this.isPaused = true; // Pause the game
+                    this.switchDialog("intro"); // Trigger pre-battle dialogue
+                }
+
+                // **Trigger enemy reaction during battle**
+                if (this.distanceTraveled >= this.maxDistance / 3 && !this.isSceneCompleted["midBattle"]) {
+                    this.isPaused = true;
+                    this.switchDialog("midBattle"); // Trigger enemy surprise dialogue
+                }
+
+                // **Trigger final battle dialogue**
+                if (this.distanceTraveled >= this.maxDistance * 2 / 3 && !this.isSceneCompleted["finalBattle"]) {
+                    this.isPaused = true;
+                    this.switchDialog("finalBattle"); // Final battle
+                }
+            }
+
+
+            getPlayer() {
+                return this.player;
+            }
+
+            // Handle key press
+            handleKeyDown(event) {
+                if (event.key === "Enter") {
+                    this.showDialogLine();
+                }
+                if (this.getPlayer().health > 0) {
+                    if (event.key === "d") {
+                        this.keys.d = true;
+                        this.player.facingRight = true; // face right
+                    }
+                    if (event.key === "a") {
+                        this.keys.a = true;
+                        this.player.facingRight = false; // face left
+                    }
+                    if (event.key === "k" && !this.getPlayer().isJumping) {
+                        this.getPlayer().isJumping = true;
+                        this.getPlayer().velocityY = -this.canvas.height * 0.02;
+                    }
+                    if (event.key === "j" && !this.getPlayer().isAttacking) {
+                        this.keys.j = true;
+                        this.getPlayer().isAttacking = true;
+
+                        // Generate projectile
+                        let projectile = {
+                            x: this.getPlayer().facingRight ? this.getPlayer().x + this.player.width : this.player.x,
+                            y: this.getPlayer().y + this.getPlayer().height / 2,
+                            speed: this.getPlayer().facingRight ? this.canvas.width * 0.01 : -this.canvas.width * 0.01
+                        };
+                        this.projectiles.push(projectile);
+
+                        setTimeout(() => { this.player.isAttacking = false; }, 1000);
+                    }
+                }
+            }
+
+            // Handle key release
+            handleKeyUp(event) {
+                if (event.key === "d") this.keys.d = false;
+                if (event.key === "a") this.keys.a = false;
+                if (event.key === "j") this.keys.j = false;
+                
+            }
+        }
+
+        class Game {
+          constructor() {
+            this.ui = new GameUI();
+            this.logic = new GameLogic();
+            this.lastFrameTime = 0;
+            this.updateInterval = 1000 / 60;
+			this.isPaused = false;
+			this.animationFrameId = null;
+            }
+          prepareGame() {
+            const gameContainer = document.getElementById('game-screen');
+            // Prepare game container DOM elements here;            
+            // Connect DOM element to game logic or game ui accordingly;
+            this.assignButtons();
+          }
+          startGame() {
+            this.ui.startGame();
+            // Start game logic here;
+            this.gameLoop();
+            // this.updateInterval = /* Your desired update interval */;
+            
+			if(this.animationFrameId)
+			{
+				cancelAnimationFrame(this.animationFrameId);
+			}
+			this.animationFrameId = requestAnimationFrame(this.gameLoop.bind(this));
+          }
+          updateGame() {
+            // Update game logic here;
+            this.logic.update();
+          }
+          resetGame() {
+            // Reset game logic here;	
+            this.logic.restartGame();
+			this.isPaused = false;
+			cancelAnimationFrame(this.animationFrameId);
+          }
+		  pause() {
+			this.isPaused = true;
+			cancelAnimationFrame(this.animationFrameId);
+		  }
+		  resume() {
+			this.isPaused = false;
+			this.gameLoop();
+		  }
+          gameLoop(timestamp) {
+
+            const deltaTime = timestamp - this.lastFrameTime;
+            
+            const backgroundSound = document.getElementById('background-music');
+            backgroundSound.play();
+            if (deltaTime > this.updateInterval) {
+              this.updateGame();
+              this.lastFrameTime = timestamp;
+            }
+            if(this.animationFrameId)
+			{
+				cancelAnimationFrame(this.animationFrameId);
+			}
+            if (this.logic.done || this.isPaused) return;
+			this.animationFrameId = requestAnimationFrame(this.gameLoop.bind(this));
+          }
+          isMobileDevice() {
+                return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            }
+          setupMobileControls() {
+                console.log("Mobile controls activated");
+                // Get buttons
+                const leftButton = document.getElementById("left-button");
+                const rightButton = document.getElementById("right-button");
+                const jumpButton = document.getElementById("jump-button");
+                const attackButton = document.getElementById("attack-button");
+
+                // Move left
+                leftButton.addEventListener("touchstart", () => this.logic.keys.a = true);
+                leftButton.addEventListener("touchend", () => this.logic.keys.a = false);
+
+                // Move right
+                rightButton.addEventListener("touchstart", () => this.logic.keys.d = true);
+                rightButton.addEventListener("touchend", () => this.logic.keys.d = false);
+
+                // Jump
+                jumpButton.addEventListener("touchstart", () => {
+                    if (!this.logic.player.isJumping) {
+                        this.logic.player.isJumping = true;
+                        this.logic.player.velocityY = -this.canvas.height * 0.02;
+                    }
+                });
+
+                // Attack
+                attackButton.addEventListener("touchstart", () => {
+                    if (!this.logic.getPlayer().isAttacking) {
+                        this.logic.keys.j = true;
+                        this.logic.getPlayer().isAttacking = true;
+                        // Generate projectile
+                        let projectile = {
+                            x: this.logic.getPlayer().facingRight ? this.logic.getPlayer().x + this.logic.player.width : this.logic.player.x,
+                            y: this.logic.getPlayer().y + this.logic.getPlayer().height / 2,
+                            speed: this.logic.getPlayer().facingRight ? this.logic.canvas.width * 0.01 : -this.logic.canvas.width * 0.01
+                        };
+                        this.logic.projectiles.push(projectile);
+                        setTimeout(() => { this.logic.getPlayer().isAttacking = false; }, 300);
+                    }
+                });
+
+                // ✅ Ensure virtual buttons are visible
+                document.getElementById("mobile-controls").style.display = "flex";
+
+            }
+
+          assignButtons() {
+            const playButton = document.getElementById('play-button');
+			const settingsButton = document.getElementById('settings-button');
+			const instructionsButton = document.getElementById('instructions-button');
+			const playAgainButton = document.getElementById('play-again-button');
+			const mainMenuButtons = document.querySelectorAll('#game-over-main-menu-button, #settings-back-button, #instructions-back-button');
+			const gameMenuButton = document.getElementById('game-menu-button');
+			const gameRestartButton = document.getElementById('game-restart-button');
+			const gameInstructionsButton = document.getElementById('game-instructions-button');
+
+			playButton.addEventListener('click', this.startGame.bind(this));
+			settingsButton.addEventListener('click', this.ui.settings.bind(this.ui));
+			instructionsButton.addEventListener('click', this.ui.instructions.bind(this.ui));
+			playAgainButton.addEventListener('click', this.resetGame.bind(this));
+			mainMenuButtons.forEach(button => button.addEventListener('click', () => {
+				this.ui.mainMenu();
+			}));
+			gameMenuButton.addEventListener('click', () => {
+				this.ui.mainMenu();
+			});
+			gameRestartButton.addEventListener('click', this.startGame.bind(this));
+			gameInstructionsButton.addEventListener('click', () => {
+						this.pause();						
+						this.ui.swapToScreen(this.ui.instructionsScreen);
+						document.getElementById('instructions-back-button').addEventListener('click', () => {
+							this.ui.swapToScreen(this.ui.gameContainer);
+							this.resume();
+						}, { once: true });
+					});
+            
+			// Your button event listeners here
+            document.addEventListener('keydown', (event) => this.logic.handleKeyDown(event));
+            document.addEventListener('keyup', (event) => this.logic.handleKeyUp(event));
+            
+            
+            //Dialog Box
+            const dialogBox = document.getElementById('dialog-box');
+            dialogBox.addEventListener('click', () => {
+                if (this.logic.isPaused && this.logic.dialogDisplayed) {
+                    this.logic.currentLineIndex++;
+                    this.logic.showDialogLine();
+                }
+            });
+
+
+            // ✅ Add virtual buttons only on mobile devices
+            if (this.isMobileDevice()) {
+                this.setupMobileControls();
+            }
+
+
+          }
+        }
+        const game = new Game();
+        game.prepareGame();
+      });
+    </script>
+  </body>
+</html>
