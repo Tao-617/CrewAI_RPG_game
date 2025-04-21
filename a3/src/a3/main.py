@@ -18,8 +18,9 @@ def run():
     Run the RPG game development crew.
     """
     inputs = {
-        "game_title": "Lament of the Lost Gods",
+        "game_title": "Dragon Slayer",
         "topic": "RPG Fantasy",
+        "game_style":"battle and magic",
         "current_year": str(datetime.now().year),
         "background_path": "resource/js/background.js",
         "dialog_path": "resource/js/dialogData.js",

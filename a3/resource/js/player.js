@@ -17,12 +17,12 @@ export class Player {
         this.score = 0;
         this.isAttacking = false;
         this.projectiles = [];
-
+        this.isGameOver = false;
         this.spritesheet = new Image();
         this.spritesheet.src = "images/player_walk.png";
 
         this.frameIndex = 0;  // Current frame index
-        this.frameWidth = 128; // Single frame width (adjust based on image)
+        this.frameWidth = 125; // Single frame width (adjust based on image)
         this.frameHeight = 235; // Single frame height
         this.totalFrames = 4; // Total frames in the spritesheet
         this.frameSpeed = 8; // Number of frames before switching to the next image
@@ -52,7 +52,7 @@ export class Player {
             this.frameIndex = 0; // Show first frame when standing still
         }
 
-        let frameX = this.frameIndex * this.frameWidth;
+        let frameX = this.frameIndex * this.frameWidth-15;
 
         this.ctx.save(); // Save current state
 

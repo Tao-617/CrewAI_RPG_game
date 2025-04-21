@@ -1,138 +1,64 @@
-Character Design Document for Lament of the Lost Gods
+Character Design Document for Dragon Slayer: The Rise of the Forgotten Kingdom
 
-1. The Godslayer (Player Character)
-
-Visual Prompt:
-A mysterious figure with an ethereal aura, gender-neutral features allowing for player customization. Glowing, shifting tattoos cover their body, pulsing with divine energy. Eyes that change color based on the most recently absorbed god's essence. Wears adaptive armor that evolves throughout the game, incorporating elements from each god's domain.
-
-Personality Traits:
-- Determined and resolute
-- Curiosity about their forgotten past
-- Struggle with the temptation of power
-- Adaptable to different situations
-- Torn between duty and personal desires
-
-Abilities and Role:
-- Ability to absorb and wield divine essence
-- Mastery over multiple elemental powers
-- Skill in both physical combat and magical abilities
-- Central figure in the fate of Ethoria
-
-Background Story:
-The Godslayer's origin is shrouded in mystery. They awaken after a thousand-year slumber with fragmented memories of a time before the Sundering. As they journey through Ethoria, they slowly piece together their past, discovering their role in the gods' downfall and the responsibility that comes with their power.
-
-Interaction Style:
-- Dialogue options range from compassionate to ruthless
-- Can form alliances or rivalries with key characters
-- Actions directly impact the world and characters' perceptions
-- Struggles with trust due to lost memories
-
-2. Lyra, the Last Oracle
+1. Aria (Protagonist)
 
 Visual Prompt:
-A young woman with flowing silver hair and blind, opalescent eyes. Intricate, glowing runes tattooed on her skin pulse with prophetic energy. Wears flowing robes of shimmering fabric that seems to ripple with visions of past and future. A crystal orb levitates near her, serving as a focus for her powers.
+A young woman with long, flowing auburn hair and piercing green eyes. She wears a leather vest over a simple linen shirt, sturdy pants, and well-worn boots. A silver pendant in the shape of a dragon's eye hangs around her neck. Her expression is determined and curious, with a hint of uncertainty.
 
 Personality Traits:
-- Wise beyond her years
-- Cryptic and often speaks in riddles
-- Carries the burden of foresight
-- Deeply compassionate, yet detached
-- Struggles with the weight of her knowledge
+- Brave and adventurous
+- Curious and eager to learn
+- Determined and resilient
+- Compassionate towards both humans and creatures
+- Sometimes impulsive and headstrong
 
-Abilities and Role:
-- Prophetic visions and ability to glimpse possible futures
-- Vast knowledge of ancient lore and forgotten history
-- Guide and advisor to the Godslayer
-- Key to unraveling the mysteries of the Sundering
+Abilities:
+- Developing telepathic communication with dragons
+- Natural affinity for ancient magic
+- Skilled in basic combat and survival techniques
 
 Background Story:
-Lyra was born with the gift of foresight, the last in a long line of oracles. Raised in seclusion by the remnants of an ancient order, she was prepared for the Godslayer's awakening. Unknown to most, she carries a fragment of the Light God's essence within her, granting her powers but also tying her fate to the gods' return.
+Aria was orphaned as an infant during a dragon attack on a small village. She was found and raised by Eldrin, a former scholar of dragon lore, in the remote village of Oakvale. Growing up, Aria always felt a strange connection to the ancient tales of dragons and Dragon Riders, often dreaming of soaring through the skies on the back of a majestic beast. Unbeknownst to her, she is the last descendant of the Dragon Riders' bloodline, her true identity kept secret by Eldrin to protect her from those who would exploit her hidden powers.
+
+Motivations:
+- Discover the truth about her heritage and the Dragon Riders
+- Protect the innocent from corrupted dragons and other threats
+- Restore balance between humans and dragons in Eldoria
+- Uncover the mysteries of her emerging abilities
 
 Interaction Style:
-- Offers guidance through cryptic visions and ancient prophecies
-- Forms a close bond with the Godslayer, but keeps certain truths hidden
-- Challenges the player to think beyond the immediate and consider long-term consequences
-- Struggles with whether to reveal her connection to the Light God
+Aria is friendly and open with those she trusts, but can be cautious with strangers. She's always eager to learn more about the world around her and the history of Eldoria. When interacting with dragons, she shows a mix of awe and determination, striving to understand and connect with them. With the player, Aria serves as the primary lens through which the story unfolds, her growth and discoveries mirroring the player's journey through the game.
 
-3. Karzak, the Void Hunter
+2. Eldrin (Mentor)
 
 Visual Prompt:
-A grizzled, battle-scarred warrior with a cybernetic arm infused with void-repelling technology. Eye patch over his left eye, which glows faintly with suppressed void energy. Wears mismatched armor cobbled together from various sources, each piece enchanted against the void. Carries a shape-shifting weapon that adapts to different combat situations.
+An elderly man with a long, white beard and kind, wise eyes behind round spectacles. He wears simple, earth-toned robes adorned with subtle dragon motifs. A gnarled wooden staff with a blue crystal at its top is always at his side. His posture is slightly hunched, but his movements are deliberate and purposeful.
 
 Personality Traits:
-- Gruff and initially distrustful
-- Fiercely loyal once trust is earned
-- Driven by vengeance against the Void
-- Pragmatic and sometimes ruthless
-- Hides deep emotional pain beneath a tough exterior
+- Wise and knowledgeable
+- Protective and caring
+- Patient teacher
+- Occasionally cryptic
+- Burdened by the weight of secrets
 
-Abilities and Role:
-- Expert in combat against Void-Touched creatures
-- Knowledge of void corruption and its effects
-- Potential ally and combat trainer for the Godslayer
-- Voice of caution against the allure of divine power
+Abilities:
+- Extensive knowledge of dragon lore and ancient history
+- Basic magical abilities focused on protection and healing
+- Skilled herbalist and alchemist
 
 Background Story:
-Karzak lost his family to a Void incursion, barely escaping with his life. The encounter left him partially corrupted, a condition he constantly battles. He has dedicated his life to hunting Void-Touched creatures and finding a way to push back the encroaching darkness. His experiences have left him skeptical of gods and divine power.
+Eldrin was once a respected scholar at the grand libraries of the capital, dedicating his life to the study of dragons and the Order of Dragon Riders. When the Great Sundering occurred, he managed to save several ancient texts and artifacts from destruction. Recognizing the importance of preserving this knowledge, Eldrin retreated to the remote village of Oakvale. When he discovered the orphaned Aria and sensed her latent powers, he took it upon himself to raise and protect her, preparing her for the destiny he believed she would one day face.
+
+Motivations:
+- Protect Aria and guide her towards her destiny
+- Preserve the knowledge and legacy of the Dragon Riders
+- Restore balance to Eldoria
+- Atone for his perceived failure to prevent the Great Sundering
 
 Interaction Style:
-- Initially antagonistic towards the Godslayer, slowly warming up based on player actions
-- Offers blunt, practical advice and combat training
-- Can become a steadfast ally or bitter rival depending on the player's choices
-- Challenges the Godslayer's growing power and questions their motives
+Eldrin is patient and nurturing with Aria, always ready with a lesson or a word of wisdom. He can be more reserved with others, carefully gauging their trustworthiness before sharing information. With the player, Eldrin serves as a source of guidance and lore, providing crucial information about the history of Eldoria and the Dragon Riders through dialogue and optional conversations.
 
-4. Elara, the Essence Weaver
+3. Cyrus (Ally)
 
 Visual Prompt:
-An ethereal woman with hair that shimmers and changes color like flowing essence. Her skin is covered in swirling, iridescent patterns that shift as she works her craft. Wears an intricate harness of crystal vials containing various essences. Fingers constantly emit small sparks of divine energy.
-
-Personality Traits:
-- Intensely curious and eager to experiment
-- Struggles with addiction to the power of essence
-- Brilliant but sometimes reckless
-- Torn between helping others and pursuing her own goals
-- Charismatic and persuasive
-
-Abilities and Role:
-- Mastery over the forging and manipulation of divine essence
-- Creation of powerful artifacts and enhancement of the Godslayer's abilities
-- Knowledge of the metaphysical properties of Ethoria
-- Potential ally or tempter for the Godslayer
-
-Background Story:
-Elara discovered her talent for essence manipulation at a young age. Her abilities drew the attention of a secret society dedicated to preserving divine knowledge. As she grew more powerful, she became obsessed with the potential of godly essence, leading her to take greater risks in her experiments. She sees the Godslayer as both an opportunity for study and a potential source of immense power.
-
-Interaction Style:
-- Eagerly assists the Godslayer while probing for knowledge about their nature
-- Offers powerful upgrades and artifacts, sometimes with hidden costs
-- Can become a close confidante or a dangerous influence
-- Her own desire for power may align with or conflict with the Godslayer's goals
-
-5. Malachar, the Void Sovereign
-
-Visual Prompt:
-A towering figure of swirling darkness and corrupted divine energy. Fragments of what once was ornate armor are fused with his void-corrupted flesh. Eyes burn with the stolen essence of gods. Crystalline growths of pure void protrude from his body. A corona of anti-light surrounds him, distorting reality itself.
-
-Personality Traits:
-- Megalomaniacal yet eloquent
-- Deeply convinced of the righteousness of his cause
-- Bitter and resentful towards the gods
-- Manipulative and charismatic
-- Retains twisted remnants of his former heroic nature
-
-Abilities and Role:
-- Mastery over the Void and corrupted divine essence
-- Ability to corrupt and control lesser beings
-- Vast knowledge of the gods' true nature and the history of Ethoria
-- Primary antagonist and dark mirror to the Godslayer
-
-Background Story:
-Once a legendary hero, Malachar discovered the gods' corruption and sought to stop them. In a fateful confrontation, he was infused with a mixture of void energy and the essence of fallen gods. The event drove him mad, twisting his noble goal of saving Ethoria into a desire to remake it entirely. He now sees the Void as the only true path to salvation.
-
-Interaction Style:
-- Attempts to sway the Godslayer to his cause through temptation and shared history
-- Confrontations are a mix of grand philosophical debates and epic battles
-- Reveals uncomfortable truths about the nature of the gods and Ethoria
-- His tragic past and corrupted nobility make him a complex, sympathetic villain
-
-These character designs provide a rich foundation for the world of Lament of the Lost Gods, offering complex personalities, vivid visuals, and intertwining backstories that support the game's themes and conflicts. Each character presents unique opportunities for player interaction and story development, contributing to an immersive and emotionally resonant gaming experience.
+A rugged man in his mid-twenties with short, dark hair and a neatly trimmed beard. He wears well-maintained leather armor with numerous pouches and a forest-green cloak. A longbow is slung across his back, and a shortsword hangs at his hip. His eyes are sharp and observant, constantly scanning his surroundings.

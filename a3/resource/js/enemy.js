@@ -70,7 +70,7 @@ export class EnemyManager {
                 this.enemyFrameCounter = 0;
             }
 
-            let frameX = this.enemyFrameIndex * this.enemyFrameWidth;
+            let frameX = this.enemyFrameIndex * this.enemyFrameWidth - 15;
 
             this.ctx.save(); // Save the current drawing state
             this.ctx.scale(-1, 1); // Flip horizontally

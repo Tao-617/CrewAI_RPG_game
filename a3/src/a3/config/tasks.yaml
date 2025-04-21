@@ -8,8 +8,6 @@ game_story_writing_task:
     key characters, conflicts, and player progression.
   agent: game_story_writer
 
-
- 
 game_character_design_task:
   description: >
     Create detailed and unique character designs for {game_title} based on the game story and world setting.
@@ -25,55 +23,62 @@ game_character_design_task:
   agent: RoleDesigner
   context: [game_story_writing_task]
  
-
-game_environment_design_task:
+game_character_image_generation_task:
   description: >
-    Design immersive and contextually appropriate environments for {game_title}.
-    Utilize the game’s storyline and character designs to create key iconic locations 
-    that serve as the primary settings throughout the game.
-    
-    - Develop a structured "world map" consisting of major locations where the player 
-      encounters key characters.
-    - Assign specific scenes to particular locations based on the storyline.
-    - Ensure that the environmental details support the emotional and narrative context of the game.
-    
-    Read the existing environment drawing functions from {background_path} and update them 
-    (e.g., switch_background function) with improved scene rendering logic and additional 
-    environmental details.
-    
-    Follow the JavaScript coding style and drawing function conventions used in {background_path}. 
-    Ensure that the scene designs are simple, realistic, and easy to implement using geometric shapes. 
-    Provide **clear and detailed comments** in the code to assist the Graphics Engineer 
-    in implementing the drawer functions efficiently.
+    Read character designs from the RoleDesigner task and generate anime-style character illustrations using DALL·E.
+    Each image must depict a front-facing, half-body portrait of the character, with a simple solid-color background.
+    The visual appearance, mood, and details must strictly align with the character description provided.
+
+    Save all generated images to "a4/images/characters".
+
+    After image generation, automatically call the "Remove Background Tool" to remove the background from each image.
+    Save the background-removed versions to "a4/images/characters_rmv".
+
+    The list of generated image paths will be saved to "a4/images/characters_output.txt", which will be used by the background removal tool.
   expected_output: >
-    - A structured environment design document that outlines major locations in the game world.
-    - Scene descriptions, detailing the characters present and key visual elements.
-    - Updated JavaScript drawing function implementations following the format of {background_path}, 
-      ensuring smooth integration into the game.
+    A list of generated anime-style character images and background-removed versions with their file paths.
+    - a4/images/characters/elara.png
+    - a4/images/characters_rmv/elara.png
+  agent: rolesDrawer
+  context: [game_character_design_task]
+
+game_scene_prompt_generation_task:
+  description: >
+    Based on the story of {game_title} and the designed characters, generate a list of major game scenes 
+    along with a visual prompt for each scene that will be used to generate a DALL·E background image.
+
+    - Identify key story-driven locations and the characters involved.
+    - For each location, write a **high-quality DALL·E image prompt** that captures the intended mood, 
+      architecture, and style of the scene.
+    - Ensure each prompt is visually descriptive, clear, and optimized for fantasy-style DALL·E outputs.
+    - Each scene should be named, include a brief narrative context, and provide a precise image prompt.
+
+  expected_output: >
+    A structured list (in markdown) of:
+    - Scene Name
+    - Characters Involved
+    - Short description of the scene (1-2 sentences)
+    - DALL·E Visual Prompt (used for background generation) without characters
   agent: ScenesDesigner
   context: [game_story_writing_task, game_character_design_task]
 
-
-game_scene_programming_task:
+game_scene_background_generation_task:
   description: >
-    Implement scene rendering functions for {game_title} by integrating environment design data.
-    Read scene descriptions from the game_environment_design_task output and implement the 
-    corresponding scene rendering functions. Follow the coding style from {drawer_path} 
-    to ensure the functions are formatted in JavaScript in a structured and reusable manner.
-    
-    - Ensure that each scene rendering function is implemented within the `Drawer` class.
-    - Utilize the `ctx` (context-based) drawing method to render geometric shapes, 
-      backgrounds, and scene-specific elements dynamically.
-    - Optimize the rendering process by carefully distinguishing between elements that 
-      should be **preloaded** (static elements) and elements that should be **updated every frame** (dynamic elements).
-    - Maintain a **consistent and structured code style** with `drawer_path` to ensure easy integration 
-      and maintainability.
+    Generate background images for each scene described in the game_scene_prompt_generation_task 
+    using the provided DALL·E visual prompts.
+
+    - Read each scene name and corresponding visual prompt.
+    - For each prompt, generate a 1024x1024 fantasy-style background image using DALL·E 3.
+    - Ensure filenames are lowercase, snake_case, and unique per scene.
+    - Return a list of the generated image file paths.
+    - Set output_dir to "a4/images/backgrounds"
   expected_output: >
-    A structured JavaScript script containing the `Drawer` class with well-implemented 
-    scene rendering functions. Each function should be dynamically generated based on 
-    game_environment_design_task outputs and follow the formatting conventions from {drawer_path}.
+    A list of image files generated:
+    - `main_village.png`
+    - `dragon_cave.png`
+    - `battlefield.png`
   agent: GraphicsEngineer
-  context: [game_environment_design_task]
+  context: [game_scene_prompt_generation_task]
 
 game_dialogue_writing_task:
   description: >
@@ -96,7 +101,32 @@ game_dialogue_writing_task:
     formatted as a JSON object based on {dialog_path} template, making it suitable for 
     direct implementation in the game engine.
   agent: DialogDesigner
-  context: [game_story_writing_task, game_character_design_task, game_environment_design_task]
+  context: [game_story_writing_task, game_character_design_task, game_scene_prompt_generation_task]
+
+game_weapon_magic_image_generation_task:
+  description: >
+    For each game character and their associated scenes, generate simple **pixel-style** images of weapons and magic effects they might use.
+    Ensure each image:
+    - Follows pixel art aesthetics (low-resolution style).
+    - Has a clean, solid color background (to be removed later).
+    - Reflects the character’s personality, class, or element from the design doc.
+    
+    After generating each image, use the "Remove Background Tool" to automatically remove the background color.
+    
+    - Save original images to: "a4/images/weapons_magic"
+    - Save background-removed images to: "a4/images/weapons_magic_rmv"
+    - Store all image file paths (original + clean) in: "a4/images/weapons_magic_output.txt"
+
+  expected_output: >
+    A list of image files for weapons and magic abilities, including original and background-removed versions.
+    - a4/images/weapons_magic/elara_staff.png
+    - a4/images/weapons_magic_rmv/elara_staff.png
+    - a4/images/weapons_magic/kael_fireball.png
+    - a4/images/weapons_magic_rmv/kael_fireball.png
+
+  agent: rolesDrawer
+  context: [game_character_design_task, game_scene_prompt_generation_task]
+
 
 
 game_dialogue_control_task:
@@ -116,52 +146,87 @@ game_dialogue_control_task:
   agent: DialogController
   context: [game_dialogue_writing_task]
 
-game_test_background:
+game_scene_logic_design_task:
   description: >
-    Perform in-depth testing of the scene design and scene implementation results in {game_title}.
-    Ensure that:
-    - The scene descriptions from game_environment_design_task align with the implemented rendering functions in game_scene_programming_task.
-    - The implemented drawing functions correctly reflect the intended environment.
-    - The interactions between the environment, characters, and dialogues are seamless.
-    - The code structure is clean, modular, and maintainable.
-    Identify inconsistencies, missing elements, or performance issues and generate a structured test report.
+    Read the existing gameplay logic code from the following files:
+    - resource/js/logic.js
+    - resource/js/player.js
+    - resource/js/enemy.js
+
+    Then, based on the scene descriptions from game_story_writing_task and game_dialogue_writing_task,
+    design **unique gameplay mechanics** playable for all scenes.
+
+    Requirements:
+    - Do **not** break from the side-scrolling, sprite-based structure of the game.
+    - New mechanics should be feasible by extending or modifying `Player`, `Enemy`, or projectile/magic behavior.
+    - Include ideas such as: elemental weaknesses, ranged vs melee mechanics, enemy patterns, jump zones, magic areas.
+    - You should not redesign the full game system, just layer new logic
+    - Reference `game_style` if provided to stay consistent in tone and gameplay expectations.
+    - Output a structured breakdown: Scene Name, New Mechanics, Integration Notes, and Example Code Snippets 
+      (as needed).
+
   expected_output: >
-    A comprehensive test report evaluating:
-    - The correctness of implemented scene rendering functions.
-    - The usability, performance, and completeness of the graphics code.
-    - The integrity and consistency of function calls between game_scene_programming_task and game_environment_design_task.
-    The report should include detailed feedback, reproducible test cases, and suggestions for improvements.
-  agent: GameTester
-  context: [game_scene_programming_task, game_environment_design_task]
+    A detailed markdown file listing gameplay logic enhancements for each scene, including:
+    - Scene Name
+    - Custom Mechanics for Player / Enemy / Interactions
+    - How to integrate within the existing JavaScript logic
+    - Sample code snippets or pseudocode for clarity
+
+  agent: game_logic_designer
+  context: [game_story_writing_task, game_dialogue_writing_task]
+  output_file: a4/scene_logic.md
+
+game_logic_code_update_task:
+  description: >
+    Modify `resource/js/logic.js` to implement gameplay logic from `game_scene_logic_design_task`. 
+    Do not touch unrelated code. Only inject or replace logic tied to player/enemy/trigger behavior.
+
+    Output JavaScript code to `a4/js/logic.js`.
+  expected_output: >
+    Updated logic.js with new scene logic:
+    - Player/enemy interactions
+    - Scene events
+    - Trigger-based effects
+  agent: game_logic_programmer
+  context: [game_scene_logic_design_task]
+  output_file: a4/js/logic.js
 
 
-game_graphics_code_update_task:
-  description: >
-    Analyze feedback from game_test_background and refine the scene rendering functions for {game_title}.
-    Review the test report and address any missing elements, incorrect function calls, 
-    or performance issues in the original scene rendering script.
-    If only minor fixes are needed, update only the relevant sections and save the changes 
-    into a new versioned file without duplicating the entire previous output.
-  expected_output: >
-    A refined JavaScript script containing updates to the scene rendering functions 
-    based on game_test_background. Only the necessary modifications are included, 
-    and the updates are saved in a separate file to track changes.
-  agent: GraphicsEngineer
-  context: [game_test_background]
 
-game_scene_design_update_task:
+game_player_code_update_task:
   description: >
-    Review the scene rendering code and refine the scene design implementation for {game_title}.
-    Analyze the feedback from game_test_background and the updates made by game_graphics_code_update_task.
-    Ensure that all scene elements are correctly defined, visually coherent, and properly structured.
-    Validate that the function calls align with the expected structure and update any missing or incorrect details.
-    Save only the necessary updates in a separate file to maintain version tracking.
+    Modify `resource/js/player.js` based on `game_scene_logic_design_task` and 
+    `game_logic_code_update_task`. Implement new player abilities and input logic. 
+    Keep existing structure intact. Focus on mechanics like double-jump, magic, or combo attack 
+    only where specified.
+
+    Write valid JavaScript code and output to `a4/js/player.js`.
   expected_output: >
-    A revised scene design script with necessary updates, fixing issues found in testing,
-    and ensuring correct integration with the Graphics Engineer's rendering functions.
-    The updates should be saved in a new versioned file.
-  agent: ScenesDesigner
-  context: [game_environment_design_task, game_graphics_code_update_task, game_test_background]
+    Complete JavaScript implementation of the updated Player class with:
+    - Scene-specific abilities
+    - New input keys
+    - Canvas compatibility
+  agent: game_logic_programmer
+  context: [game_scene_logic_design_task, game_logic_code_update_task]
+  output_file: a4/js/player.js
+
+
+game_enemy_code_update_task:
+  description: >
+    Update `resource/js/enemy.js` according to `game_scene_logic_design_task` and 
+    `game_logic_code_update_task`. Add new enemy behavior, projectiles, AI logic. 
+    Keep rendering code untouched.
+
+    Write JavaScript code and output to `a4/js/enemy.js`.
+  expected_output: >
+    Updated EnemyManager class JavaScript code with:
+    - Scene-specific logic
+    - Smart enemy actions
+    - Projectile and pattern extensions
+  agent: game_logic_programmer
+  context: [game_scene_logic_design_task, game_logic_code_update_task, game_player_code_update_task]
+  output_file: a4/js/enemy.js
+
 
 # game_ui_design_task:
 #   description: >

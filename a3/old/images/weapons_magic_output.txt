@@ -1,0 +1,4 @@
+- a4/images/weapons_magic/aria_sword.png
+- a4/images/weapons_magic_rmv/aria_sword.png
+- a4/images/weapons_magic/aria_fireball.png
+- a4/images/weapons_magic_rmv/aria_fireball.png

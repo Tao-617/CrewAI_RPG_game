@@ -24,7 +24,7 @@ export class GameLogic {
 
 
         this.distanceTraveled = 0; // Track the distance traveled by the player
-        this.maxScore = 40; // Set the maximum distance; the game ends when reached
+        this.maxScore = 20; // Set the maximum distance; the game ends when reached
 
     }
         
@@ -56,10 +56,18 @@ export class GameLogic {
                     // Increase health
                     this.player.health = Math.min(100, this.player.health + 5);
                     this.player.score += 1;
+
                     // Update high score
                     let highScore = localStorage.getItem("highScore") || 0;
                     if (this.player.score > highScore) 
                         localStorage.setItem("highScore", this.player.score);
+
+                    // If distance reaches 10000, the game ends
+                    if (this.player.score >= this.maxScore) {
+                        this.player.isGameOver = true;
+                        this.dialogueSystem.triggerDialogue(this);
+                        this.reachGoal();
+                    }
                 }
             });
         });
@@ -73,11 +81,11 @@ export class GameLogic {
                 // Remove enemy projectile
                 this.enemy.enemyProjectiles.splice(epIndex, 1);
                 // Decrease health
-                this.player.health = Math.max(0, this.player.health - 1);
+                this.player.health = Math.max(0, this.player.health - 2);
                 // If player health reaches 0, call `playerDeath()`
                 if (this.player.health <= 0) {
-                    this.dialogueSystem.switchDialog('lose');
-                    this.playerDeath(this.enemy);
+                    this.dialogueSystem.triggerDialogue(this);
+                    this.playerDeath();
                 }
             }
         });
@@ -86,11 +94,8 @@ export class GameLogic {
    
     // Handle reaching the goal
     reachGoal() {
-        this.dialogueSystem.switchDialog('win');
         console.log("Player has reached the goal!");
-        this.done = true; // Stop game loop
         clearInterval(this.enemy.enemySpawner); // Stop enemy spawning
-
         // Get high score
         let highScore = localStorage.getItem("highScore") || 0;
         let newHighScore = false;
@@ -100,6 +105,7 @@ export class GameLogic {
             localStorage.setItem("highScore", this.player.score);
             newHighScore = true;
         }
+        this.done = true; // Stop game loop
 
         // Display "You Win" screen
         setTimeout(() => {

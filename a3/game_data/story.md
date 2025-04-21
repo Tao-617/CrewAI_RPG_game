@@ -1,102 +1,55 @@
-Lament of the Lost Gods: Game Storyline Document
+Dragon Slayer: The Rise of the Forgotten Kingdom
 
-1. World Overview:
-The game is set in the world of Ethoria, a once-prosperous realm now teetering on the brink of destruction. Ethoria was created by five primordial gods who imbued the land with their essence, maintaining balance and harmony. However, a cataclysmic event known as the Sundering occurred 1,000 years ago, causing the gods to vanish and plunging Ethoria into chaos.
+World-Building:
+The game is set in the mystical realm of Eldoria, a once-prosperous kingdom now shrouded in darkness. Centuries ago, Eldoria was a land of magic and wonder, where humans and dragons coexisted in harmony. The kingdom was protected by the Order of Dragon Riders, an elite group of warriors who formed unbreakable bonds with their dragon companions.
 
-The world is divided into five distinct regions, each reflecting the domain of its patron god:
-1. Solaria: The sun-blessed plains and golden cities (Light God)
-2. Umbra: The shadow-veiled forests and hidden enclaves (Shadow God)
-3. Tempestia: The storm-wracked coasts and floating islands (Storm God)
-4. Terramor: The great mountains and deep caverns (Earth God)
-5. Vitalia: The lush jungles and mystical groves (Life God)
+However, 500 years before the game's events, a catastrophic event known as the Great Sundering occurred. A powerful dark mage named Malachar, consumed by jealousy and a thirst for power, unleashed an ancient evil upon the land. This malevolent force corrupted many dragons, turning them against their human allies. The ensuing war devastated Eldoria, leaving the kingdom in ruins and driving the remaining uncorrupted dragons into hiding.
 
-2. Main Plot:
-The player takes on the role of the Godslayer, a being of mysterious origin awakened after a thousand-year slumber. As the Godslayer regains consciousness, they discover that Ethoria is plagued by corruption, with monstrous beings called the Void-Touched threatening to consume all of existence.
+In the present day, Eldoria is a shadow of its former self. The land is divided into struggling city-states, each barely holding out against the constant threat of corrupted dragons and other monstrous creatures that roam the wilderness. The once-great Order of Dragon Riders is now nothing more than a legend, and the art of dragon-taming has been lost to time.
 
-The main quest of the Godslayer is to restore balance to Ethoria by seeking out the essences of the lost gods, which have been scattered across the land. By collecting these essences, the Godslayer can rekindle the power of the gods and push back the encroaching Void.
+Main Character:
+The player takes on the role of Aria, a young orphan raised in the remote village of Oakvale. Unbeknownst to Aria, she is the last descendant of the Dragon Riders' bloodline. Her true identity has been kept secret by her adoptive grandfather, a former scholar of dragon lore, to protect her from those who would seek to exploit her hidden powers.
 
-However, as the Godslayer progresses on their journey, they uncover a shocking truth: the gods themselves were responsible for the Sundering, having grown corrupt and power-hungry. The player must then make a crucial decision: restore the gods to their former glory or absorb their power to become a new guardian of Ethoria.
+Character Backstories:
 
-3. Key Characters:
+1. Aria (Protagonist):
+   - Age: 18
+   - Background: Orphaned at a young age, raised by her adoptive grandfather in Oakvale.
+   - Personality: Brave, curious, and determined. She has always felt a strange connection to the ancient tales of dragons and Dragon Riders.
+   - Special Ability: As the game progresses, Aria discovers she can communicate with dragons telepathically and eventually bond with them.
 
-a) The Godslayer (Player Character):
-- A being of unknown origin with the ability to absorb and wield divine essence
-- Possesses fragmented memories of the time before the Sundering
-- Struggles with their role as either savior or potential usurper of the gods
+2. Eldrin (Mentor):
+   - Age: 65
+   - Background: Aria's adoptive grandfather and a former scholar of dragon lore.
+   - Personality: Wise, protective, and somewhat mysterious. He has been preparing Aria for her destiny in secret.
+   - Role: Guides Aria in the early stages of her journey and provides crucial information about the history of Eldoria and the Dragon Riders.
 
-b) Lyra, the Last Oracle:
-- A young seer who guides the Godslayer on their quest
-- Possesses knowledge of ancient prophecies and the true nature of the gods
-- Harbors a secret connection to the Light God
+3. Cyrus (Ally):
+   - Age: 25
+   - Background: A skilled ranger and monster hunter from the city-state of Ironhold.
+   - Personality: Pragmatic, loyal, and initially skeptical of the legends surrounding dragons and Dragon Riders.
+   - Role: Becomes Aria's traveling companion and helps her navigate the dangerous wilderness of Eldoria.
 
-c) Karzak, the Void Hunter:
-- A grizzled warrior dedicated to fighting the Void-Touched
-- Distrusts the Godslayer but recognizes the need for their power
-- Hides a tragic past involving the loss of his family to the Void
+4. Lyra (Ally):
+   - Age: 30
+   - Background: A mage from the secretive Arcane Academy, dedicated to preserving magical knowledge.
+   - Personality: Intelligent, curious, and sometimes overly analytical.
+   - Role: Assists Aria in understanding and developing her magical abilities, particularly her connection to dragons.
 
-d) Elara, the Essence Weaver:
-- A mystical artisan who can forge divine essence into powerful artifacts
-- Aids the Godslayer in harnessing the power of the lost gods
-- Struggles with her own desire for godlike power
+5. Malachar (Main Antagonist):
+   - Age: Unknown (appears to be in his 40s due to dark magic)
+   - Background: The dark mage responsible for the Great Sundering, who has been plotting his return to power for centuries.
+   - Personality: Cunning, power-hungry, and utterly ruthless.
+   - Goal: To completely subjugate all dragons and use their power to rule Eldoria.
 
-e) Malachar, the Void Sovereign:
-- The primary antagonist, a being born from the corruption of the gods
-- Seeks to consume all of Ethoria and reshape it in his image
-- Was once a mortal hero who tried to stop the gods' corruption
+6. Zephyr (Dragon Ally):
+   - Age: 200 (young for a dragon)
+   - Background: One of the last uncorrupted dragons, hiding from both humans and corrupted dragons.
+   - Personality: Proud, initially distrustful of humans, but loyal once bonded with Aria.
+   - Role: Becomes Aria's dragon companion and helps her rediscover the lost arts of the Dragon Riders.
 
-4. Major Conflicts:
+Main Plot Points:
 
-a) The Godslayer vs. The Void-Touched:
-- Ongoing battles against corrupted creatures and minions of the Void
-- Each region has unique Void-Touched enemies reflecting the corrupted god's domain
-
-b) Restoring Balance to Ethoria:
-- Quests to cleanse corrupted lands and rekindle divine essence in each region
-- Solving conflicts between various factions vying for power in the absence of the gods
-
-c) Uncovering the Truth of the Sundering:
-- Piecing together fragmented memories and ancient lore
-- Confronting the dark history of the gods and their role in Ethoria's downfall
-
-d) Internal Struggle of the Godslayer:
-- Grappling with the temptation of godlike power
-- Deciding the fate of Ethoria: restoration of the old gods or ushering in a new era
-
-e) Final Confrontation with Malachar:
-- Epic battle against the Void Sovereign to determine the fate of Ethoria
-- Player's choices throughout the game influence the nature of this confrontation
-
-5. Player Progression:
-
-a) Divine Essence Collection:
-- Players gather essence from defeated Void-Touched and corrupted lands
-- Essence is used to unlock new abilities and upgrade existing ones
-
-b) Reputation System:
-- Actions and decisions affect the Godslayer's standing with various factions
-- Reputation influences available quests, dialogue options, and potential allies
-
-c) Artifact Crafting:
-- Collaborate with Elara to create powerful items from divine essence
-- Artifacts can grant unique abilities or enhance the Godslayer's powers
-
-d) Memory Restoration:
-- Uncover fragments of the Godslayer's past through exploration and key story moments
-- Restored memories provide insight into the game's lore and the Godslayer's true nature
-
-e) Realm Restoration:
-- Cleanse and restore each of the five regions to gain their unique blessings
-- Restored realms provide safe havens, new allies, and access to powerful resources
-
-f) Moral Choices:
-- Key decisions throughout the game shape the Godslayer's path
-- Choices influence the game's ending and the ultimate fate of Ethoria
-
-6. Themes:
-- The corruption of power and its consequences
-- The nature of godhood and the responsibility it entails
-- Redemption and the possibility of overcoming a dark past
-- The balance between order and chaos, light and shadow
-- The price of salvation and the sacrifices required to save a world
-
-This comprehensive storyline for Lament of the Lost Gods provides a rich foundation for an engaging and immersive gaming experience. The narrative intertwines world-building, character development, and player agency to create a dynamic and emotionally resonant journey through the realm of Ethoria.
+1. The Awakening:
+   - The game begins with Aria's village, Oakvale, being attacked by a corrupted dragon.
+   - During the attack, Aria discovers her ability to communicate with dragons when
