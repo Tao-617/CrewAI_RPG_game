@@ -1,0 +1,65 @@
+ Page Design Features
+Theme Color: Dark theme featuring blue, black, and purple backgrounds with bright accent highlights.
+
+Typography: "Orbitron" font is used throughout, delivering a futuristic, tech-inspired visual style.
+
+Layout: Fullscreen layout leveraging absolute positioning to manage different screen states (screen classes).
+
+Background: Utilizes linear gradient color schemes with simple graphic aesthetics.
+
+Button Style:
+
+Gradient backgrounds (blue to green), hover effects (color shift and slight elevation).
+
+Rounded corners, glowing shadows, and white borders for enhanced visual feedback.
+
+Responsive Design:
+
+Optimized for mobile devices with dynamic scaling of fonts and button sizes.
+
+Integrated virtual control buttons (left, right, jump, attack) specifically designed for touch interactions.
+
+✨ Interaction Logic Features
+Screen Navigation:
+
+Screens include start-menu, settings, instructions, game-screen, and game-over.
+
+Managed consistently via the swapToScreen() function for seamless transitions.
+
+Game State Management:
+
+Centralized control in the Game class with methods like startGame(), resetGame(), pause(), and resume().
+
+Input Control:
+
+Keyboard support (A/D for movement, K for jump, J for attack).
+
+Mobile touch buttons are mapped to mirror the same actions.
+
+Sound System:
+
+Background music loops continuously during gameplay.
+
+Specific sound effects triggered on game start and game over events.
+
+Dialogue System:
+
+Bottom-aligned dialogue box with a semi-transparent black background.
+
+Clicking the dialogue box advances conversations, integrated with logic.js handling.
+
+✨ File and Module Structure Features
+Modularization:
+
+Clear separation of concerns:
+
+GameUI manages UI behaviors.
+
+GameLogic handles core gameplay mechanics in a dedicated JS file.
+
+Asset Organization:
+
+Resources like images, audio files, and scripts are categorized by module.
+
+JavaScript modules are imported using ES6 import syntax for clarity and maintainability.
+

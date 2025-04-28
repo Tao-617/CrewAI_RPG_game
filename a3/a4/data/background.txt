@@ -1,0 +1,53 @@
+【New Background.js Module Summary】
+🔵 Core Style Changes
+
+No longer using the Drawer component to manually draw background elements.
+
+Each scene now corresponds to a full background image.
+
+Backgrounds are dynamically switched and directly drawn onto the canvas.
+
+The object movement logic (e.g., clouds, trees) remains if needed for parallax effects.
+
+🔵 Core Functional Description
+
+Initialization:
+
+The Background class preloads all scene-specific background images using <img> elements.
+
+Background Switching:
+
+The switchBackground(scene) method updates the current background image reference without reloading from disk.
+
+Drawing Background:
+
+The drawBackground() method draws the active background image to fully cover the canvas.
+
+Backgrounds are stretched or scaled adaptively:
+(ctx.drawImage(image, 0, 0, canvas.width, canvas.height)).
+
+Moving Static Objects:
+
+moveObjects(logic) is retained to handle horizontal movement of clouds, grass, trees, etc., for added parallax if desired.
+
+🔵 Technical Requirements
+
+Image Preloading:
+
+Each scene uses a dedicated Image object preloaded during initialization.
+
+Scene Name to Image Mapping:
+
+Scene names map to image filenames, e.g., verdantHeartlands → images/backgrounds/verdant_heartlands.png.
+
+Efficient Switching:
+
+Switching backgrounds only changes the active reference — no repeated network loading.
+
+Responsive Drawing:
+
+Background images are rendered considering different screen sizes and aspect ratios.
+
+Default Scene:
+
+Starts with verdantHeartlands as the initial background.

@@ -1,0 +1,90 @@
+【UI.js Module Style Guide】
+🔵 Core Responsibilities
+
+Manage all screen (view) transitions and UI interactions.
+
+Handle button bindings, screen switching, HUD visibility control.
+
+Does not directly control game logic — purely handles the user interface layer.
+
+🔵 Key Functional Areas
+
+Screen Management:
+
+Switch between screens (Start Menu, Settings, Instructions, Game, Game Over) via .swapToScreen(targetScreen).
+
+Only one active screen at a time (using active class toggling).
+
+HUD Control:
+
+The #hud panel displays dynamic information (Health, Score, Distance).
+
+HUD is visible during gameplay, hidden during menus or dialogs.
+
+Button Binding:
+
+Centralized binding for all major buttons (Play, Settings, Instructions, Back, Restart, Menu).
+
+Support both PC and mobile controls (Left, Right, Jump, Attack buttons).
+
+Mobile Adaptation:
+
+Detect if running on a mobile device.
+
+Activate touch control UI (#mobile-controls) for mobile users.
+
+Map virtual buttons to the same actions as keyboard controls.
+
+Sound Management (Optional):
+
+Play background music on loop.
+
+Optionally trigger sound effects when switching screens (start, win, lose sounds).
+
+Dialogue System Integration:
+
+Properly pause gameplay when a dialogue scene is active.
+
+Hide HUD and controls during dialogues.
+
+Allow clicking the dialogue box to continue/advance.
+
+🔵 Code Structure Style
+
+Modular Class: Wrap everything in a GameUI class.
+
+Small, Clear Methods:
+
+startGame()
+
+pauseGameUI()
+
+showHUD()
+
+hideHUD()
+
+showScreen(screenId)
+
+setupButtonListeners()
+
+Unified Initialization:
+
+Instantiate via const ui = new GameUI();
+
+Only interact externally via clean public methods.
+
+🔵 Naming Conventions
+
+Use camelCase for variables and methods.
+
+DOM elements accessed via document.getElementById() with clear and consistent IDs:
+
+start-menu-screen
+
+settings-screen
+
+instructions-screen
+
+game-screen
+
+game-over-screen

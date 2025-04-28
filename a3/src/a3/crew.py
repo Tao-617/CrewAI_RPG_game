@@ -3,20 +3,18 @@ from dotenv import load_dotenv
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import FileReadTool
-from a3.tools.custom_tool import GenerateImageTool, RemoveBGTool
+from a3.tools.custom_tool import GenerateImageTool, RemoveBGTool, FileInsertOrReplaceTool, FileWriteTool
 from langchain_anthropic import ChatAnthropic
-from langchain_openai import ChatOpenAI  # 更新导入路径
+from langchain_openai import ChatOpenAI
 
-# 加载环境变量
+# --- 初始化 ---
+
 load_dotenv()
 
-# 确保目录存在
 def ensure_directories_exist():
-    directories = ['config', 'game_data']
-    for directory in directories:
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-            print(f"Created directory: {directory}")
+    directories = ['config', 'a4/data', 'a4/javascripts', 'a4/images/backgrounds', 'a4/images/portrait', 'a4/images/weapons']
+    for dir in directories:
+        os.makedirs(dir, exist_ok=True)
 
 # 检查必要的环境变量
 def check_environment_variables():
@@ -39,267 +37,181 @@ class A3:
     tasks_config = 'config/tasks.yaml'
 
     def __init__(self):
-        # 初始化时检查环境和目录
         ensure_directories_exist()
         check_environment_variables()
 
-    # ✅ 使用 OpenAI GPT 模型的角色绘制 Agent
+    # --- Agents 定义 ---
     @agent
-    def rolesDrawer(self) -> Agent:
-        dalle_llm = ChatOpenAI(
-            model="gpt-4-turbo",
-            temperature=0.5,
-            openai_api_key=os.getenv("OPENAI_API_KEY")
-        )
-        return Agent(
-            config=self.agents_config['rolesDrawer'],
-            verbose=True,
-            llm=dalle_llm,
-            tools=[GenerateImageTool(),RemoveBGTool()]
-        )
-
-    # 🎭 游戏故事创作 Agent
-    @agent
-    def game_story_writer(self) -> Agent:
-        claude_llm = ChatAnthropic(
-            model_name="anthropic/claude-3-5-sonnet-20240620",  # 修正模型名称格式
-            api_key=os.getenv("ANTHROPIC_API_KEY")
-        )
-        return Agent(
-            config=self.agents_config['game_story_writer'],
-            llm=claude_llm,
-            verbose=True,
-            tools=[]
-        )
-
-    # 🧠 游戏逻辑设计 Agent
-    @agent
-    def game_logic_programmer(self) -> Agent:
-        claude_llm = ChatAnthropic(
-            model_name="anthropic/claude-3-5-sonnet-20240620",
-            api_key=os.getenv("ANTHROPIC_API_KEY")
-        )
-        return Agent(
-            config=self.agents_config['game_logic_programmer'],
-            llm=claude_llm,
-            verbose=True,
-            tools=[FileReadTool()]  
-        )
-
-    @agent
-    def game_logic_designer(self) -> Agent:
+    def StoryTellerAgent(self) -> Agent:
         dalle_llm = ChatOpenAI(  # 这里用 GPT-4-Turbo
             model="gpt-4-turbo",
             temperature=0.5,
             openai_api_key=os.getenv("OPENAI_API_KEY")
         )
         return Agent(
-            config=self.agents_config['game_logic_designer'],
+            config=self.agents_config['StoryTellerAgent'],
             verbose=True,
-            llm=dalle_llm,
-            tools=[FileReadTool()]
+            llm=dalle_llm
         )
 
-    # 👤 角色设计 Agent
     @agent
-    def RoleDesigner(self) -> Agent:
-        claude_llm = ChatAnthropic(
-            model_name="anthropic/claude-3-5-sonnet-20240620",  # 修正模型名称格式
-            api_key=os.getenv("ANTHROPIC_API_KEY")
-        )
-        return Agent(
-            config=self.agents_config['RoleDesigner'],
-            llm=claude_llm,
-            verbose=True,
-            tools=[]
-        )
-
-    # 💬 对话设计 Agent
-    @agent
-    def DialogDesigner(self) -> Agent:
-        claude_llm = ChatAnthropic(
-            model_name="anthropic/claude-3-5-sonnet-20240620",
-            api_key=os.getenv("ANTHROPIC_API_KEY")
-        )
-        return Agent(
-            config=self.agents_config['DialogDesigner'],
-            verbose=True,
-            llm=claude_llm,
-            tools=[FileReadTool()]
-        )
-
-
-    # 🏞️ 场景设计 Agent
-    @agent
-    def ScenesDesigner(self) -> Agent:
-        dalle_llm = ChatOpenAI(
-            model="gpt-4-turbo",  # 或 "gpt-3.5-turbo" 更经济
-            temperature=0.5,
-            openai_api_key=os.getenv("OPENAI_API_KEY")
-        )
-        return Agent(
-            config=self.agents_config['ScenesDesigner'],
-            verbose=True,
-            llm=dalle_llm,
-            tools=[]
-        )
-
-
-    # 🖥️ 图形工程师 Agent
-    @agent
-    def GraphicsEngineer(self) -> Agent:
-        dalle_llm = ChatOpenAI(
+    def AssetGeneratorAgent(self) -> Agent:
+        dalle_llm = ChatOpenAI(  # 这里用 GPT-4-Turbo
             model="gpt-4-turbo",
             temperature=0.5,
             openai_api_key=os.getenv("OPENAI_API_KEY")
         )
         return Agent(
-            config=self.agents_config['GraphicsEngineer'],
+            config=self.agents_config['AssetGeneratorAgent'],
             verbose=True,
             llm=dalle_llm,
-            tools=[GenerateImageTool(), RemoveBGTool()]
+            tools=[FileReadTool(), GenerateImageTool(), RemoveBGTool()]
         )
 
-
-    # 🎮 对话控制器 Agent
     @agent
-    def DialogController(self) -> Agent:
-        claude_llm = ChatAnthropic(
-            model_name="anthropic/claude-3-5-sonnet-20240620",
-            api_key=os.getenv("ANTHROPIC_API_KEY")
+    def BackgroundImageAgent(self) -> Agent:
+        dalle_llm = ChatOpenAI(  # 这里用 GPT-4-Turbo
+            model="gpt-4-turbo",
+            temperature=0.5,
+            openai_api_key=os.getenv("OPENAI_API_KEY")
         )
         return Agent(
-            config=self.agents_config['DialogController'],
+            config=self.agents_config['BackgroundImageAgent'],
             verbose=True,
-            llm=claude_llm,
-            tools=[FileReadTool()]
+            llm=dalle_llm,
+            tools=[FileReadTool(), GenerateImageTool()]
         )
 
+    @agent
+    def PlayerDeveloperAgent(self) -> Agent:
+        dalle_llm = ChatOpenAI(  # 这里用 GPT-4-Turbo
+            model="gpt-4-turbo",
+            temperature=0.5,
+            openai_api_key=os.getenv("OPENAI_API_KEY")
+        )
+        return Agent(
+            config=self.agents_config['PlayerDeveloperAgent'],
+            verbose=True,
+            llm=dalle_llm,
+            tools=[FileReadTool(),FileInsertOrReplaceTool()],
+        )
 
+    @agent
+    def EnemyDeveloperAgent(self) -> Agent:
+        dalle_llm = ChatOpenAI(  # 这里用 GPT-4-Turbo
+            model="gpt-4-turbo",
+            temperature=0.5,
+            openai_api_key=os.getenv("OPENAI_API_KEY")
+        )
+        return Agent(
+            config=self.agents_config['EnemyDeveloperAgent'],
+            verbose=True,
+            llm=dalle_llm,
+            tools=[FileReadTool(),FileWriteTool()],
+        )
 
-    # 🧠 任务定义
+    @agent
+    def BackgroundManagerAgent(self) -> Agent:
+        dalle_llm = ChatOpenAI(  # 这里用 GPT-4-Turbo
+            model="gpt-4-turbo",
+            temperature=0.5,
+            openai_api_key=os.getenv("OPENAI_API_KEY")
+        )
+        return Agent(
+            config=self.agents_config['BackgroundManagerAgent'],
+            verbose=True,
+            llm=dalle_llm,
+            tools=[FileReadTool(),FileWriteTool()],
+        )
+
+    @agent
+    def DialogueWriterAgent(self) -> Agent:
+        dalle_llm = ChatOpenAI(  # 这里用 GPT-4-Turbo
+            model="gpt-4-turbo",
+            temperature=0.5,
+            openai_api_key=os.getenv("OPENAI_API_KEY")
+        )
+        return Agent(
+            config=self.agents_config['DialogueWriterAgent'],
+            verbose=True,
+            llm=dalle_llm,
+            tools=[FileReadTool(),FileWriteTool()],
+        )
+
+    @agent
+    def DialogueControllerAgent(self) -> Agent:
+        dalle_llm = ChatOpenAI(  # 这里用 GPT-4-Turbo
+            model="gpt-4-turbo",
+            temperature=0.5,
+            openai_api_key=os.getenv("OPENAI_API_KEY")
+        )
+        return Agent(
+            config=self.agents_config['DialogueControllerAgent'],
+            verbose=True,
+            llm=dalle_llm,
+            tools=[FileReadTool(),FileInsertOrReplaceTool()],
+        )
+
+    # --- Tasks 定义 ---
     @task
-    def game_story_writing_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['game_story_writing_task'],
-            output_file='game_data/story.md'
-        )
+    def story_writing_task(self) -> Task:
+        return Task(config=self.tasks_config['story_writing_task'])
 
+  
     @task
-    def game_character_design_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['game_character_design_task'],
-            output_file='game_data/characters.md'
-        )
-
-
-    @task
-    def game_character_image_generation_task(self) -> Task:
-        task_config = self.tasks_config['game_character_image_generation_task']
-
-        return Task(
-            description=task_config["description"],
-            expected_output=task_config["expected_output"],
-            context=task_config.get("context", []),
-            agent=self.rolesDrawer(),
-        )
-
-
-    @task
-    def game_scene_prompt_generation_task(self) -> Task:
-        task_config = self.tasks_config["game_scene_prompt_generation_task"]
-        return Task(
-            description=task_config["description"],
-            expected_output=task_config["expected_output"],
-            context=task_config.get("context", []),
-            agent=self.ScenesDesigner(),  # 使用 Claude 或 OpenAI 均可
-            output_file="game_data/scene_prompts.md"  # 可选：保存结果
-        )
-
-    
-    @task
-    def game_scene_background_generation_task(self) -> Task:
-        task_config = self.tasks_config["game_scene_background_generation_task"]
-        return Task(
-            description=task_config["description"],
-            expected_output=task_config["expected_output"],
-            context=task_config.get("context", []),
-            agent=self.GraphicsEngineer()
-        )
-
-    @task
-    def game_weapon_magic_image_generation_task(self) -> Task:
-        task_config = self.tasks_config["game_weapon_magic_image_generation_task"]
-        return Task(
-            description=task_config["description"],
-            expected_output=task_config["expected_output"],
-            context=task_config.get("context", []),
-            agent=self.rolesDrawer(),
-            output_file="a4/images/weapons_magic_output.txt"
-        )
-
-
-    @task
-    def game_dialogue_writing_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['game_dialogue_writing_task'],
-            output_file='game_data/dialogues.js'
-        )
-
-    @task
-    def game_dialogue_control_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['game_dialogue_control_task'],
-            output_file='game_data/DialogControl.js'
-        )
-
-
-    @task
-    def game_scene_logic_design_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['game_scene_logic_design_task'],
-            output_file='a4/scene_logic.md'
-        )
+    def background_generation_task(self) -> Task:
+        return Task(config=self.tasks_config['background_generation_task'])
 
     @task
-    def game_logic_code_update_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['game_logic_code_update_task']
-        )
+    def character_image_generation_task(self) -> Task:
+        return Task(config=self.tasks_config['character_image_generation_task'])
 
     @task
-    def game_player_code_update_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['game_player_code_update_task']
-        )
+    def weapon_image_generation_task(self) -> Task:
+        return Task(config=self.tasks_config['weapon_image_generation_task'])
 
     @task
-    def game_enemy_code_update_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['game_enemy_code_update_task']
-        )
+    def image_code_modify_task(self) -> Task:
+        return Task(config=self.tasks_config['image_code_modify_task'])
 
-    # 🏗 Crew 组建
+    @task
+    def enemy_code_development_task(self) -> Task:
+        return Task(config=self.tasks_config['enemy_code_development_task'])
+
+    @task
+    def background_manager_development_task(self) -> Task:
+        return Task(config=self.tasks_config['background_manager_development_task'])
+
+    @task
+    def dialogue_writing_task(self) -> Task:
+        return Task(config=self.tasks_config['dialogue_writing_task'])
+
+    @task
+    def dialogue_controller_update_task(self) -> Task:
+        return Task(config=self.tasks_config['dialogue_controller_update_task'])
+
+
+    # --- Crew 定义 ---
     @crew
     def crew(self) -> Crew:
         try:
             return Crew(
                 agents=self.agents,
                 tasks=[
-                    self.game_story_writing_task(),
-                    self.game_character_design_task(),
-                    self.game_character_image_generation_task(),
-                    self.game_scene_prompt_generation_task(),
-                    self.game_scene_background_generation_task(),
-                    self.game_dialogue_writing_task(),
-                    self.game_dialogue_control_task(),
-                    self.game_weapon_magic_image_generation_task(),
-                    self.game_scene_logic_design_task(),
-                    self.game_logic_code_update_task(),
-                    self.game_player_code_update_task(),
-                    self.game_enemy_code_update_task()
+                    self.story_writing_task(),
+                                  
+                    self.dialogue_writing_task(),
+                    self.dialogue_controller_update_task(),
+                    # self.background_generation_task(),
+                    self.character_image_generation_task(),
+                    self.weapon_image_generation_task(),
+
+                    self.image_code_modify_task(),
+                    # self.enemy_code_development_task(),
+                    # self.background_manager_development_task(),
 
                 ],
+
                 process=Process.sequential,
                 verbose=True
             )

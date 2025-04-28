@@ -1,0 +1,83 @@
+Code Style Characteristics
+Modular Design:
+
+Organized into modules: Player, EnemyManager, DialogueSystem, Background, and HUD.
+
+GameLogic serves as the central controller, responsible for orchestrating updates across all subsystems.
+
+Object-Oriented Programming (OOP):
+
+All core entities (player, enemies, dialogues, background) are instantiated as classes for better encapsulation and reusability.
+
+Clear Organization:
+
+Separation of responsibilities for update cycles, collision detection, UI updates, audio playback, and game state management.
+
+✨ Core Functional Highlights
+Game Loop:
+
+The update() method refreshes each frame.
+
+Execution order: clear canvas → update background → update player → update enemies → handle projectiles → detect collisions → update HUD → trigger dialogues.
+
+Input Control:
+
+Keyboard bindings:
+
+A/D: Move left/right
+
+K: Jump
+
+J: Attack
+
+Enter: Advance dialogue
+
+Collision Detection:
+
+Projectiles colliding with enemies.
+
+Enemy projectiles colliding with the player.
+
+Integrated Dialogue System:
+
+Pauses gameplay at key story moments to display dialogues via the DialogueSystem.
+
+Score and Victory/Defeat Conditions:
+
+Reaching maximum score triggers victory.
+
+Health reaching zero triggers player death.
+
+Local Storage:
+
+localStorage is used to save and compare high scores across game sessions.
+
+Dynamic UI Management:
+
+Real-time HUD updates for health, score, and distance.
+
+Dynamically generated "You Win" or "Game Over" screens upon end conditions.
+
+✨ Technical Style
+ES6+ Syntax:
+
+Extensive use of modern JavaScript features such as class, import/export, and arrow functions.
+
+Canvas 2D API:
+
+Native canvas drawing used for rendering gameplay scenes and UI elements.
+
+Responsive Canvas Scaling:
+
+Canvas dimensions dynamically set to window.innerWidth and window.innerHeight for full-screen support.
+
+Simplified Event Debouncing:
+
+Use of setTimeout() for delayed UI actions (e.g., restart buttons).
+
+Error Handling and Safety:
+
+Ensures clamping of health values using Math.max and Math.min.
+
+Proper dynamic removal of projectiles and enemies when off-screen or defeated.
+

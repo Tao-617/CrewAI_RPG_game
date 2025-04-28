@@ -1,0 +1,244 @@
+game_story_writing_task:
+  description: >
+    Develop an engaging and immersive storyline for {game_title}.
+    The story should include world-building, character backstories, and major plot points.
+    Ensure the narrative aligns with the game's genre and themes.
+  expected_output: >
+    A comprehensive game storyline document outlining the main plot,
+    key characters, conflicts, and player progression.
+  agent: game_story_writer
+
+game_character_design_task:
+  description: >
+    Create detailed and unique character designs for {game_title} based on the game story and world setting.
+    Each character should have a distinct appearance, personality, and backstory that fit seamlessly into the game.
+    The final design should be structured into prompts for AI-assisted visualization, alongside textual descriptions 
+    of their role and interactions in the world.
+  expected_output: >
+    A structured character design document containing:
+    - Character visual prompts (for AI-generated images)
+    - Personality traits, abilities, and roles
+    - Background story and motivations
+    - Interaction style with other characters and the player
+  agent: RoleDesigner
+  context: [game_story_writing_task]
+ 
+game_character_image_generation_task:
+  description: >
+    Read character designs from the RoleDesigner task and generate anime-style character illustrations using DALL·E.
+    Each image must depict a front-facing, half-body portrait of the character, with a simple solid-color background.
+    The visual appearance, mood, and details must strictly align with the character description provided.
+
+    Save all generated images to "a4/images/characters".
+
+    After image generation, automatically call the "Remove Background Tool" to remove the background from each image.
+    Save the background-removed versions to "a4/images/characters_rmv".
+
+    The list of generated image paths will be saved to "a4/images/characters_output.txt", which will be used by the background removal tool.
+  expected_output: >
+    A list of generated anime-style character images and background-removed versions with their file paths.
+    - a4/images/characters/elara.png
+    - a4/images/characters_rmv/elara.png
+  agent: rolesDrawer
+  context: [game_character_design_task]
+
+game_scene_prompt_generation_task:
+  description: >
+    Based on the story of {game_title} and the designed characters, generate a list of major game scenes 
+    along with a visual prompt for each scene that will be used to generate a DALL·E background image.
+
+    - Identify key story-driven locations and the characters involved.
+    - For each location, write a **high-quality DALL·E image prompt** that captures the intended mood, 
+      architecture, and style of the scene.
+    - Ensure each prompt is visually descriptive, clear, and optimized for fantasy-style DALL·E outputs.
+    - Each scene should be named, include a brief narrative context, and provide a precise image prompt.
+
+  expected_output: >
+    A structured list (in markdown) of:
+    - Scene Name
+    - Characters Involved
+    - Short description of the scene (1-2 sentences)
+    - DALL·E Visual Prompt (used for background generation) without characters
+  agent: ScenesDesigner
+  context: [game_story_writing_task, game_character_design_task]
+
+game_scene_background_generation_task:
+  description: >
+    Generate background images for each scene described in the game_scene_prompt_generation_task 
+    using the provided DALL·E visual prompts.
+
+    - Read each scene name and corresponding visual prompt.
+    - For each prompt, generate a 1024x1024 fantasy-style background image using DALL·E 3.
+    - Ensure filenames are lowercase, snake_case, and unique per scene.
+    - Return a list of the generated image file paths.
+    - Set output_dir to "a4/images/backgrounds"
+  expected_output: >
+    A list of image files generated:
+    - `main_village.png`
+    - `dragon_cave.png`
+    - `battlefield.png`
+  agent: GraphicsEngineer
+  context: [game_scene_prompt_generation_task]
+
+game_dialogue_writing_task:
+  description: >
+    Create immersive and contextually appropriate dialogues for {game_title}.
+    Ensure character dialogues align with their personality, backstory, and the overall storyline.
+    The dialogues should enhance player engagement, narrative depth, and provide branching choices
+    where applicable. 
+
+    - Read character descriptions from game_character_design_task to ensure each dialogue matches 
+      the character's personality and backstory.
+    - Read {dialog_path} to understand the existing dialogue structure and maintain consistency 
+      with the predefined JSON format.
+    - Generate dialogues that are **linked to specific scenes**, ensuring that each scene has 
+      a corresponding dialogue set.
+    - Make sure the dialogues reflect the **emotional tone and context** of the scene, keeping 
+      the language natural and fitting to the character's personality.
+    - Use informal and engaging language where appropriate, avoiding overly formal phrasing.
+  expected_output: >
+    A structured script containing dialogues for key interactions,
+    formatted as a JSON object based on {dialog_path} template, making it suitable for 
+    direct implementation in the game engine.
+  agent: DialogDesigner
+  context: [game_story_writing_task, game_character_design_task, game_scene_prompt_generation_task]
+
+game_weapon_magic_image_generation_task:
+  description: >
+    For each game character and their associated scenes, generate simple **pixel-style** images of weapons and magic effects they might use.
+    Ensure each image:
+    - Follows pixel art aesthetics (low-resolution style).
+    - Has a clean, solid color background (to be removed later).
+    - Reflects the character’s personality, class, or element from the design doc.
+    
+    After generating each image, use the "Remove Background Tool" to automatically remove the background color.
+    
+    - Save original images to: "a4/images/weapons_magic"
+    - Save background-removed images to: "a4/images/weapons_magic_rmv"
+    - Store all image file paths (original + clean) in: "a4/images/weapons_magic_output.txt"
+
+  expected_output: >
+    A list of image files for weapons and magic abilities, including original and background-removed versions.
+    - a4/images/weapons_magic/elara_staff.png
+    - a4/images/weapons_magic_rmv/elara_staff.png
+    - a4/images/weapons_magic/kael_fireball.png
+    - a4/images/weapons_magic_rmv/kael_fireball.png
+
+  agent: rolesDrawer
+  context: [game_character_design_task, game_scene_prompt_generation_task]
+
+
+
+game_dialogue_control_task:
+  description: >
+    Implement and refine core game mechanics for {game_title}.
+    Integrate dialogues by updating the `triggerDialogue` function using 
+    the output from game_dialogue_writing_task and the structure defined in {DiaControl_path}.
+    Ensure that the dialogue control system properly handles branching choices, 
+    timing, and scene transitions while maintaining fluid interaction with game mechanics.
+  expected_output: >
+    A game mechanics script containing:
+    - Detailed implementations for player controls, physics interactions, and gameplay loops.
+    - An updated `triggerDialogue` function that correctly references the generated dialogues 
+      from game_dialogue_writing_task.
+    - A structured dialogue management system that aligns with {DiaControl_path}, 
+      ensuring smooth character interactions.
+  agent: DialogController
+  context: [game_dialogue_writing_task]
+
+game_scene_logic_design_task:
+  description: >
+    Read the existing gameplay logic code from the following files:
+    - resource/js/logic.js
+    - resource/js/player.js
+    - resource/js/enemy.js
+
+    Then, based on the scene descriptions from game_story_writing_task and game_dialogue_writing_task,
+    design **unique gameplay mechanics** playable for all scenes.
+
+    Requirements:
+    - Do **not** break from the side-scrolling, sprite-based structure of the game.
+    - New mechanics should be feasible by extending or modifying `Player`, `Enemy`, or projectile/magic behavior.
+    - Include ideas such as: elemental weaknesses, ranged vs melee mechanics, enemy patterns, jump zones, magic areas.
+    - You should not redesign the full game system, just layer new logic
+    - Reference `game_style` if provided to stay consistent in tone and gameplay expectations.
+    - Output a structured breakdown: Scene Name, New Mechanics, Integration Notes, and Example Code Snippets 
+      (as needed).
+
+  expected_output: >
+    A detailed markdown file listing gameplay logic enhancements for each scene, including:
+    - Scene Name
+    - Custom Mechanics for Player / Enemy / Interactions
+    - How to integrate within the existing JavaScript logic
+    - Sample code snippets or pseudocode for clarity
+
+  agent: game_logic_designer
+  context: [game_story_writing_task]
+  output_file: a4/scene_logic.md
+
+game_logic_code_update_task:
+  description: >
+    Inject scene-specific gameplay logic into `resource/js/logic.js` from `game_scene_logic_design_task`.
+    Only update relevant sections like player/enemy interactions and trigger effects.
+    Output clean, complete JavaScript code to `a4/js/logic.js`, using comments to explain logic blocks.
+    Then clean the output using CleanCodeOutputTool to make sure only code was written in files.
+  expected_output: >
+    Full JavaScript source of updated logic.js with:
+    - Scene events and triggers
+    - Player/enemy interaction enhancements
+    - Clean inline comments, no markdown or narration
+  agent: game_logic_programmer
+  context: [game_scene_logic_design_task]
+  output_file: a4/js/logic.js
+
+
+
+
+game_player_code_update_task:
+  description: >
+    Update `resource/js/player.js` with new mechanics from `game_scene_logic_design_task` and `game_logic_code_update_task`.
+    Focus on new player actions (e.g. double-jump, spells, combos) and input mapping.
+    Output clean JavaScript to `a4/js/player.js` with inline code comments only.
+    Then clean the output using CleanCodeOutputTool to make sure only code was written in files.
+  expected_output: >
+    Full Player class JavaScript file with:
+    - Scene-aware abilities
+    - Input system updates
+    - Compatible rendering logic
+    - All changes clearly commented
+  agent: game_logic_programmer
+  context: [game_scene_logic_design_task, game_logic_code_update_task]
+  output_file: a4/js/player.js
+
+
+game_enemy_code_update_task:
+  description: >
+    Modify `resource/js/enemy.js` to implement scene-specific enemy behavior as defined in design tasks.
+    Focus on movement, AI reactions, projectile variation, and combat logic.
+    Output full JavaScript to `a4/js/enemy.js`, using comments to clarify each feature.
+    Then clean the output using CleanCodeOutputTool to make sure only code was written in files.
+  expected_output: >
+    Final `EnemyManager` JavaScript implementation with:
+    - Pattern and behavior logic
+    - Scene-driven abilities
+    - Projectiles and attack updates
+    - Descriptive inline comments only
+  agent: game_logic_programmer
+  context: [game_scene_logic_design_task, game_logic_code_update_task, game_player_code_update_task]
+  output_file: a4/js/enemy.js
+
+
+
+# game_ui_design_task:
+#   description: >
+#     Design an intuitive and visually appealing UI for {game_title}.
+#     The UI should enhance the player's experience with clear navigation,
+#     responsive interactions, and a cohesive visual style.
+#   expected_output: >
+#     A UI/UX document containing wireframes, design mockups,
+#     and explanations of user interface interactions.
+#   agent: game_ui_designer
+#   tools: []
+#   context: [game_story_writing_task]
+
+

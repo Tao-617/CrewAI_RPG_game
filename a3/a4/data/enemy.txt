@@ -1,0 +1,70 @@
+✨ EnemyManager Module Summary
+🔵 Code Style
+Modular Design:
+
+Encapsulated in a single EnemyManager class.
+
+Clear separation of enemy logic, animation, and projectile handling.
+
+OOP Principles:
+
+Enemy attributes (position, speed, health, cooldown) stored in simple object literals inside an array.
+
+Canvas 2D Native Drawing:
+
+Uses drawImage for enemy spritesheets.
+
+Uses fillPath and basic shapes for enemy projectiles (black triangles).
+
+State Management:
+
+Animation frame counters (enemyFrameCounter, enemyFrameIndex) are used for sprite animations.
+
+Attack cooldowns are tracked individually per enemy.
+
+Difficulty Scaling:
+
+Dynamic spawning intervals reduce over time to increase challenge.
+
+🔵 Core Functionalities
+Enemy Spawning:
+
+scheduleNextSpawn() gradually decreases spawn intervals using an exponential decay based on elapsed time.
+
+spawnEnemy() creates enemy objects with randomized positions offscreen to the right.
+
+Movement and AI:
+
+Enemies move left across the screen.
+
+If the player moves right beyond 1/3 screen width, enemy speed increases (parallax catch-up effect).
+
+Attack Mechanism:
+
+Each enemy periodically fires a projectile toward the player.
+
+Enemy projectiles move left and are deleted once off-screen.
+
+Rendering:
+
+Animates enemies with 4-frame looped walking animation.
+
+Enemy sprites are horizontally flipped to face the player.
+
+Performance Optimization:
+
+Off-screen enemies and projectiles are removed to free memory.
+
+🔵 Technical Features
+Frame Control:
+
+enemyFrameSpeed defines how fast animation frames change.
+
+Spawn Scaling:
+
+difficultyIncreaseRate (default 0.99) slowly accelerates spawn rate every 10 seconds.
+
+Adaptive Speed:
+
+Enemy movement adjusts depending on player movement to maintain screen tension.
+

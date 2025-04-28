@@ -1,0 +1,59 @@
+ Code Style Characteristics
+Modular Design:
+
+A standalone Player class manages player movement, actions, and rendering.
+
+Object-Oriented Programming (OOP):
+
+Player attributes and behaviors (movement, jumping, attacking) are encapsulated cleanly within the class structure.
+
+Native Canvas Drawing:
+
+Uses drawImage() for sprite animation rendering.
+
+Uses fillRect() and arc() for simple elements like health bars and projectiles.
+
+✨ Core Functional Highlights
+Movement and Jumping:
+
+A/D keys for left/right movement.
+
+K key for jumping, with basic gravity simulation (velocityY + gravity).
+
+Animation Handling:
+
+4-frame looped spritesheet animation controlled by frameCounter and frameSpeed.
+
+Animation resets to the first frame when idle.
+
+Supports mirrored rendering using ctx.scale(-1, 1) for left/right facing.
+
+Attacks and Projectiles:
+
+J key triggers an attack, firing a blue circular projectile.
+
+Projectiles move forward and are automatically removed when off-screen.
+
+Health Bar Display:
+
+A red health bar is drawn above the player, dynamically scaling with health percentage.
+
+Score Tracking:
+
+score attribute is updated, and score rendering (drawScore()) is separated from the main updatePlayer() logic.
+
+✨ Technical Details
+Responsive Sizing:
+
+Player size, position, movement speed, and gravity are all relative to canvas.width and canvas.height for device adaptability.
+
+Mirroring Technique:
+
+Uses ctx.save() and ctx.restore() to isolate flipped drawing, preventing unwanted global canvas transformations.
+
+Performance Considerations:
+
+Simple and efficient rendering for projectiles and health bars.
+
+Automatic cleanup of projectiles once they exit the visible screen area.
+

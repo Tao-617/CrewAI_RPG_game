@@ -8,25 +8,6 @@ import openai
 import requests
 from typing import Optional
 
-# ===================== 1️⃣ 文件读取工具 =====================
-class FileReadToolInput(BaseModel):
-    """输入文件路径以读取内容"""
-    file_path: str = Field(..., description="要读取的文件路径")
-
-class FileReadTool(BaseTool):
-    name: str = "File Read Tool"
-    description: str = "读取指定路径的文件内容"
-    args_schema: Type[BaseModel] = FileReadToolInput
-
-    def _run(self, file_path: str) -> str:
-        """读取文件内容"""
-        try:
-            with open(file_path, "r", encoding="utf-8") as file:
-                return file.read()
-        except FileNotFoundError:
-            return f"❌ 错误：文件 {file_path} 未找到"
-        except Exception as e:
-            return f"❌ 错误：无法读取 {file_path}，错误信息：{str(e)}"
 
 class GenerateImageTool(BaseTool):
     name: str = "Generate Image"
@@ -57,6 +38,59 @@ class GenerateImageTool(BaseTool):
 
         return f"✅ Image saved to: {filepath}"
 
+
+class FileWriteTool(BaseTool):
+    name: str = "File Write Tool"
+    description: str = "Save a given text content into a specified file path."
+
+    def _run(self, content: str, output_path: str) -> str:
+        import os
+
+        # 确保目录存在
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+        # 写入文件
+        with open(output_path, 'w', encoding='utf-8') as file:
+            file.write(content)
+
+        return f"✅ Successfully saved to: {output_path}"
+
+class FileInsertOrReplaceTool(BaseTool):
+    name: str = "File Insert or Replace Tool"
+    description: str = "Insert or replace a specific function in a file with new content."
+
+    def _run(self, function_name: str, new_function_content: str, output_path: str) -> str:
+        import os
+        import re
+
+        # 确保目录存在
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+        if not os.path.exists(output_path):
+            return f"❌ Error: File {output_path} does not exist."
+
+        with open(output_path, 'r', encoding='utf-8') as file:
+            original_code = file.read()
+
+        # 正则定位目标函数
+        pattern = rf"(def {function_name}\b[\s\S]*?)(?=\ndef |\Z)"
+        matches = re.search(pattern, original_code)
+
+        if matches:
+            # 找到并替换
+            new_code = re.sub(pattern, new_function_content.strip() + "\n", original_code)
+            action = "replaced"
+        else:
+            # 没找到就直接追加到末尾
+            new_code = original_code.strip() + "\n\n" + new_function_content.strip()
+            action = "inserted"
+
+        # 写回文件
+        with open(output_path, 'w', encoding='utf-8') as file:
+            file.write(new_code)
+
+        return f"✅ Successfully {action} function '{function_name}' in: {output_path}"
+
 class RemoveBGTool(BaseTool):
     name: str = Field(default="Remove Background Tool", description="Remove backgrounds from character images")
     description: str = "Remove backgrounds from generated character images and save them"
@@ -74,3 +108,18 @@ class RemoveBGTool(BaseTool):
             return f"✅ Removed background: {image_path} → {output_path}"
         except Exception as e:
             return f"❌ Failed to remove background from {image_path}: {e}"
+
+
+class CodeCleanArgs(BaseModel):
+    raw_output: str
+
+class CleanCodeOutputTool(BaseTool):
+    name: str = "Clean Code Output"
+    description: str = "Removes markdown and explanation, returns raw JS code"
+    args_schema: type = CodeCleanArgs  # ✅ 添加类型注解！！
+
+    def _run(self, raw_output: str) -> str:
+        # 提取 ```js ``` 或 ```javascript ```之间的内容
+        import re
+        match = re.search(r"```(?:javascript|js)?\n(.*?)```", raw_output, re.DOTALL)
+        return match.group(1).strip() if match else raw_output.strip()

@@ -1,0 +1,80 @@
+1. Architecture Overview
+
+Frontend: HTML5 + Canvas 2D
+
+Language: JavaScript (ES6+)
+
+Structure: Modular, Responsive, Mobile + PC Adaptive
+
+2. Core Modules
+
+2.1 UI (ui.js)
+
+Screen switching: Start, Settings, Instructions, Gameplay, Game Over
+
+HUD and mobile controls display
+
+Neon-style buttons, Orbitron font, full-screen design
+
+2.2 Game Logic (logic.js)
+
+Game state management: start, pause, win, lose
+
+Entity updates: player, enemies, background
+
+Input handling: keyboard/touch
+Score, health, distance tracking
+High score saved via localStorage
+2.3 Player (player.js)
+Movement (A/D keys), Jump (K), Attack (J)
+Spritesheet animation with flip support
+Health bar rendering
+Projectile shooting
+2.4 Enemy Manager (enemy.js)
+Timed enemy spawning with difficulty scaling
+Enemy attacks with projectiles
+Enemy sprite animation
+2.5 Background (background.js)
+Scene switching using preloaded full images
+Simple parallax effects (optional)
+2.6 Dialogue System (dialogCtrl.js)
+Story dialogues triggered by score
+Pause gameplay during dialogue
+Dual character portraits (Godslayer fixed left)
+Click or Enter to advance dialogues
+2.7 HUD (hud.js)
+Real-time update: health, score, distance
+Displayed in semi-transparent panel
+3. Asset Organization
+Images: characters, weapons, backgrounds
+Audio: background music, effects
+Data: dialogue JSON files
+4. Gameplay Flow
+Start game → Play music
+Run update loop (background → player → enemies → HUD)
+Trigger dialogues at key scores
+Win (max score) or Game Over (health = 0)
+Save/update high score
+5. Technical Features
+ES6 classes, modules
+Canvas native rendering
+Fully responsive layout
+LocalStorage integration
+Lightweight performance optimization
+6. Future Upgrades
+Character selection
+Multiplayer mode
+Expanded scenes and branching stories
+
+Dynamic AIGC asset loading
+
+7. Visual & Interaction Style
+
+Theme: Dark sci-fi fantasy
+
+Colors: Deep blue, purple, neon accents
+
+Controls: Smooth and mobile-friendly
+
+Music: Epic battle and ambient themes
+

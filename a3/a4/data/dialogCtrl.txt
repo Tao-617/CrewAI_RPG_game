@@ -1,0 +1,65 @@
+【DialogueSystem Summary】
+🔵 Core Features
+
+Dialogue Management: Triggers dialogues sequentially based on scene progression (linked to player score or story advancement).
+
+Pause Mechanism: Automatically pauses gameplay logic when a dialogue is active, preventing player movement during conversations.
+
+Background Switching: Each dialogue scene triggers a background change to match the story context.
+
+Dialogue Source: Loads all dialogue lines from an external dialogScenes JSON dataset.
+
+🔵 UI Display Features
+
+Dialogue Box:
+
+A black, semi-transparent dialogue box appears at the bottom of the screen displaying the dialogue text.
+
+Dual Character Portraits:
+
+Left Side: Fixed portrait for the main character, "Godslayer".
+
+Right Side: Dynamic portrait of the current speaking character.
+
+Portrait Behavior:
+
+Speaker is highlighted (full opacity), non-speakers are dimmed (lower opacity).
+
+Character images auto-loaded dynamically from images/{CharacterName}.webp.
+
+Interaction:
+
+Click on the dialogue box or press Enter key to proceed to the next line.
+
+🔵 Scene and Story Flow Control
+
+Fixed Scene Sequence:
+
+arduino
+复制
+编辑
+verdantHeartlands → templeEternalDawn → thunderpeakMountains → earthheartForge → whisperingWoods → nightmareSpire → restoredGoldenCity → (end)
+One-Time Trigger:
+
+Each scene's dialogue is only triggered once to prevent repetition.
+
+Progression Based on Score:
+
+Dialogue scenes are unlocked automatically when the player's score reaches predefined thresholds.
+
+Victory/Defeat Handling:
+
+Automatically switches to the win or abyssalRift dialogue depending on the game's outcome.
+
+🔵 Technical Implementation Highlights
+
+showDialogLine(): Controls displaying and advancing each dialogue line.
+
+triggerDialogue(logic): Monitors game progress and triggers story events dynamically.
+
+switchDialog(scene): Changes both the active dialogue scene and the background image simultaneously.
+
+Mobile and Desktop Compatible:
+
+Dynamically adds and removes DOM elements to keep the UI clean and responsive.
+

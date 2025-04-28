@@ -74,11 +74,11 @@ export class DialogueSystem {
         let playerImage = document.getElementById('player-image');
         let characterImage = document.getElementById('character-image');
     
-        // 确保 Godslayer 始终在左侧
+        // 确保 main_role 始终在左侧
         if (!playerImage) {
             playerImage = new Image();
             playerImage.id = 'player-image';
-            playerImage.src = 'images/Godslayer.webp'; // 固定 Godslayer 图片
+            playerImage.src = 'images/portrait/main_role.webp'; // 固定 Godslayer 图片
             playerImage.alt = 'Godslayer';
             playerImage.style.position = 'absolute';
             playerImage.style.left = this.canvas.width * 0.01 + 'px';  // 左侧对齐
@@ -122,7 +122,7 @@ export class DialogueSystem {
                 
                 // 如果有下一句，并且下一句的角色不是 Godslayer，则右侧加载该角色
                 if (nextSpeaker) {
-                    let nextSpeakerImagePath = `images/${nextSpeaker}.webp`;
+                    let nextSpeakerImagePath = `images/portrait/${nextSpeaker}.webp`;
                     // 如果右侧角色图像未创建或需要更换
                     if (!characterImage || characterImage.alt !== nextSpeaker) {
                         if (characterImage) characterImage.remove(); // 移除旧图片
@@ -152,7 +152,7 @@ export class DialogueSystem {
                 
                 // 确保当前说话的角色不是 Godslayer
                 if (speaker !== 'Godslayer') {
-                    let speakerImagePath = `images/${speaker}.webp`;
+                    let speakerImagePath = `images/portrait/${speaker}.webp`;
                     
                     // 如果右侧角色图像未创建或需要更换
                     if (!characterImage || characterImage.alt !== speaker) {

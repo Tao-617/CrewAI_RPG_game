@@ -1,64 +1,174 @@
-Character Design Document for Dragon Slayer: The Rise of the Forgotten Kingdom
+Character Design Document for Dragon Slayer: Rise of the Forgotten Hero
 
-1. Aria (Protagonist)
+1. The Player Character
 
 Visual Prompt:
-A young woman with long, flowing auburn hair and piercing green eyes. She wears a leather vest over a simple linen shirt, sturdy pants, and well-worn boots. A silver pendant in the shape of a dragon's eye hangs around her neck. Her expression is determined and curious, with a hint of uncertainty.
+A young adventurer with a mysterious dragon scale birthmark. Their appearance is customizable, but they should have a default design with the following features:
+- Lean, athletic build
+- Determined expression with bright, inquisitive eyes
+- Simple, practical clothing suitable for travel
+- A subtle, iridescent patch of skin resembling dragon scales, usually hidden beneath clothing
 
 Personality Traits:
-- Brave and adventurous
-- Curious and eager to learn
-- Determined and resilient
-- Compassionate towards both humans and creatures
-- Sometimes impulsive and headstrong
+- Curious and adventurous
+- Empathetic, with a strong sense of justice
+- Adaptable and quick-thinking
+- Struggles with the weight of their destiny
 
-Abilities:
-- Developing telepathic communication with dragons
-- Natural affinity for ancient magic
-- Skilled in basic combat and survival techniques
+Abilities and Role:
+- Gradually develops dragon-like abilities (elemental manipulation, enhanced strength, limited flight)
+- Acts as a bridge between humans and dragons
+- Central figure in unraveling the mystery of the Great Sundering
 
 Background Story:
-Aria was orphaned as an infant during a dragon attack on a small village. She was found and raised by Eldrin, a former scholar of dragon lore, in the remote village of Oakvale. Growing up, Aria always felt a strange connection to the ancient tales of dragons and Dragon Riders, often dreaming of soaring through the skies on the back of a majestic beast. Unbeknownst to her, she is the last descendant of the Dragon Riders' bloodline, her true identity kept secret by Eldrin to protect her from those who would exploit her hidden powers.
-
-Motivations:
-- Discover the truth about her heritage and the Dragon Riders
-- Protect the innocent from corrupted dragons and other threats
-- Restore balance between humans and dragons in Eldoria
-- Uncover the mysteries of her emerging abilities
+Raised in a small village in the Golden Plains by their grandmother, the player character has always felt different from their peers. They've experienced vivid dreams of flying with dragons and have kept their scale-like birthmark hidden out of fear and confusion. When their village is attacked by magically-corrupted beasts, they discover their hidden potential and embark on a journey to uncover the truth about their heritage and the world's forgotten history.
 
 Interaction Style:
-Aria is friendly and open with those she trusts, but can be cautious with strangers. She's always eager to learn more about the world around her and the history of Eldoria. When interacting with dragons, she shows a mix of awe and determination, striving to understand and connect with them. With the player, Aria serves as the primary lens through which the story unfolds, her growth and discoveries mirroring the player's journey through the game.
+- Dialogue options range from diplomatic to assertive
+- Can form deep bonds with both human and dragon characters
+- Choices significantly impact relationships and story outcomes
 
-2. Eldrin (Mentor)
+2. Elara the Sage
 
 Visual Prompt:
-An elderly man with a long, white beard and kind, wise eyes behind round spectacles. He wears simple, earth-toned robes adorned with subtle dragon motifs. A gnarled wooden staff with a blue crystal at its top is always at his side. His posture is slightly hunched, but his movements are deliberate and purposeful.
+An elderly woman with a dignified bearing and eyes that sparkle with ancient wisdom. Design elements include:
+- Long, silver hair worn in intricate braids
+- Flowing robes adorned with subtle draconic symbols
+- A gnarled staff topped with a crystal that seems to hold swirling mists within
 
 Personality Traits:
-- Wise and knowledgeable
-- Protective and caring
-- Patient teacher
-- Occasionally cryptic
-- Burdened by the weight of secrets
+- Wise and patient
+- Protective of knowledge and those she mentors
+- Carries a burden of secrets and regrets
+- Cautiously optimistic about the future
 
-Abilities:
-- Extensive knowledge of dragon lore and ancient history
-- Basic magical abilities focused on protection and healing
-- Skilled herbalist and alchemist
+Abilities and Role:
+- Vast knowledge of Dragonia's history and dragon lore
+- Skilled in ancient magics
+- Acts as the player's mentor and guide
 
 Background Story:
-Eldrin was once a respected scholar at the grand libraries of the capital, dedicating his life to the study of dragons and the Order of Dragon Riders. When the Great Sundering occurred, he managed to save several ancient texts and artifacts from destruction. Recognizing the importance of preserving this knowledge, Eldrin retreated to the remote village of Oakvale. When he discovered the orphaned Aria and sensed her latent powers, he took it upon himself to raise and protect her, preparing her for the destiny he believed she would one day face.
-
-Motivations:
-- Protect Aria and guide her towards her destiny
-- Preserve the knowledge and legacy of the Dragon Riders
-- Restore balance to Eldoria
-- Atone for his perceived failure to prevent the Great Sundering
+Elara was once a prominent scholar in the royal court before the Great Sundering. She witnessed the catastrophic event and has spent the last 500 years preserving knowledge and searching for a way to heal the rift between dragons and humans. She recognized the player's potential from an early age and has been subtly guiding their development.
 
 Interaction Style:
-Eldrin is patient and nurturing with Aria, always ready with a lesson or a word of wisdom. He can be more reserved with others, carefully gauging their trustworthiness before sharing information. With the player, Eldrin serves as a source of guidance and lore, providing crucial information about the history of Eldoria and the Dragon Riders through dialogue and optional conversations.
+- Speaks in riddles and allegories
+- Provides crucial information and guidance to the player
+- Can be stern when imparting important lessons
 
-3. Cyrus (Ally)
+3. Kain the Dragon Hunter
 
 Visual Prompt:
-A rugged man in his mid-twenties with short, dark hair and a neatly trimmed beard. He wears well-maintained leather armor with numerous pouches and a forest-green cloak. A longbow is slung across his back, and a shortsword hangs at his hip. His eyes are sharp and observant, constantly scanning his surroundings.
+A charismatic and battle-hardened warrior with a commanding presence. Key visual elements:
+- Rugged, scarred face with a determined expression
+- Armor made from dragon scales, both a trophy and protection
+- Wields a massive sword with runes etched along the blade
+- A cloak clasp made from a dragon's tooth
+
+Personality Traits:
+- Charismatic leader
+- Ruthless in pursuit of his goals
+- Deeply committed to protecting humanity
+- Harbors a personal vendetta against dragons
+
+Abilities and Role:
+- Master swordsman and tactician
+- Extensive knowledge of dragon weaknesses
+- Leads the most prominent dragon-hunting guild
+- Recurring antagonist who challenges the player's beliefs
+
+Background Story:
+Kain lost his family to a dragon attack in his youth, shaping his hatred for the creatures. He rose through the ranks of dragon hunters, eventually forming his own guild dedicated to eradicating the perceived dragon threat. Despite his extreme views, Kain is respected for his leadership and combat prowess.
+
+Interaction Style:
+- Alternates between charming recruitment attempts and fierce opposition
+- Engages in heated debates about the role of dragons in the world
+- Can potentially be swayed by the player's actions and arguments
+
+4. Zephyr
+
+Visual Prompt:
+A young, sleek dragon with iridescent scales that shift color in the light. Design elements:
+- Smaller than ancient dragons, about the size of a horse
+- Elegant, elongated neck and tail
+- Expressive eyes that convey intelligence and curiosity
+- Subtle patterns on wings reminiscent of constellations
+
+Personality Traits:
+- Curious and eager to learn about humans
+- Loyal and protective of friends
+- Struggles with dragon traditions and expectations
+- Hopeful for a future of cooperation between species
+
+Abilities and Role:
+- Capable of flight and elemental breath attacks
+- Grows alongside the player, developing new abilities
+- Serves as a companion and source of dragon knowledge
+- Eventually becomes a mount for the player
+
+Background Story:
+Zephyr is an outcast among dragons due to his fascination with humans and belief in reconciliation. He left the dragon stronghold to explore the world, leading to his fateful meeting with the player. Zephyr sees their partnership as a chance to prove that cooperation between dragons and humans is possible.
+
+Interaction Style:
+- Communicates telepathically with the player
+- Offers a dragon's perspective on events and lore
+- Playful and sometimes sarcastic in lighter moments
+
+5. Queen Morena
+
+Visual Prompt:
+A regal and imposing figure with an air of calculated ambition. Key visual elements:
+- Striking, dark features with piercing eyes
+- Ornate crown incorporating dragon motifs
+- Elegant yet practical attire suitable for both court and command
+- Always accompanied by a scepter rumored to contain dragon magic
+
+Personality Traits:
+- Pragmatic and ruthless when necessary
+- Highly intelligent and politically savvy
+- Deeply committed to her people's welfare
+- Struggles with the weight of leadership and difficult choices
+
+Abilities and Role:
+- Skilled diplomat and strategist
+- Wields political power and commands a strong military
+- Seeks to harness dragon power to restore human kingdoms
+- Potential ally or enemy depending on player choices
+
+Background Story:
+Morena rose to power during a time of great instability, unifying fragmented human kingdoms through a combination of diplomacy and force. She believes that humanity's survival and prosperity depend on reclaiming the power they lost after the Great Sundering, even if it means subjugating dragons.
+
+Interaction Style:
+- Formal and calculating in official interactions
+- Tests the player's loyalty and usefulness
+- Can reveal a more vulnerable side if trust is earned
+
+6. The Scorched One
+
+Visual Prompt:
+An ancient, terrifying dragon twisted by corruption. Design elements:
+- Massive size, dwarfing other dragons
+- Scales blackened and cracked, with veins of malevolent energy pulsing beneath
+- Eyes that burn with chaotic fire
+- Tattered wings that somehow still allow for flight
+
+Personality Traits:
+- Insane and unpredictable
+- Driven by a warped sense of duty
+- Immensely powerful and aware of it
+- Tormented by the past and their role in it
+
+Abilities and Role:
+- Unparalleled control over destructive magic
+- Can corrupt other creatures and the land itself
+- Primary antagonist and the key to the Great Sundering mystery
+- Represents the ultimate challenge for the player
+
+Background Story:
+Once a noble guardian of the balance between dragons and humans, the Scorched One was corrupted by an unknown force, leading to the catastrophic Great Sundering. For 500 years, they have been working from the shadows, believing that only by eradicating both dragons and humans can the world be truly cleansed and reborn.
+
+Interaction Style:
+- Speaks in grand, apocalyptic terms
+- Attempts to sway the player to their worldview
+- Moments of lucidity reveal the tragic figure beneath the madness
+
+These character designs provide a rich, diverse cast for Dragon Slayer: Rise of the Forgotten Hero. Each character has a distinct visual identity, personality, and role in the story, allowing for complex interactions and character development throughout the game. The designs support the game's themes of unity, the weight of the past, and the struggle for identity in a changing world.
