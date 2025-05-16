@@ -18,14 +18,29 @@ def run():
     Run the RPG game development crew.
     """
     inputs = {
-        "game_title": "Dragon Slayer",
-        "topic": "RPG Fantasy",
-        "game_style":"battle and magic",
-        "current_year": str(datetime.now().year),
-        "background_path": "resource/js/background.js",
-        "dialog_path": "resource/js/dialogData.js",
-        "DiaControl_path": "resource/js/dialogCtrl.js",
-        "drawer_path": "resource/js/drawer.js",
+        "game_title": "Mage Travel",
+        "description":"a magic girl travel to different place and help the residents to fight against bad people",
+        "storyline_path":"A4/data/storyline.md",
+        "image_prompts_path":"A4/data/prompts.md",
+        "game_style": "battle and magic",
+        "dialog": "A4/javascripts/dialogData.js",
+        "dialogCtrl": "A4/javascripts/dialogCtrl.js",
+        "OriginDialogCtrl": "Origin/js/dialogCtrl.js",
+        "Portrait": "A4/images/portrait",
+        "character":"A4/data/character.md",
+        "Weapons": "A4/images/weapons/",
+        "Originplayer": "Origin/js/player.js",
+        "player": "A4/javascripts/player.js",
+        "background": "A4/images/backgrounds",
+        "enemy":"A4/javascripts/enemy.js",
+        "dialog_path": "A4/data/dialogData.js",
+        "Originenemy": "Origin/js/player.js"
+        
+        "CodeBack": "A4/javascripts/background.js"
+        "OriginCodeBack": "Origin/js/background.js"
+
+
+        "DiaControl_path": "A4/data/dialogCtrl.js",
         "overwrite": True
     }
     try:

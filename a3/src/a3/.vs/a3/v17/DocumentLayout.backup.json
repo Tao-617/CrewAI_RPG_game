@@ -42,7 +42,8 @@
               "RelativeToolTip": "config\\tasks.yaml",
               "ViewState": "AgIAANUAAAAAAAAAAAAswOQAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
-              "WhenOpened": "2025-04-02T01:38:02.336Z"
+              "WhenOpened": "2025-04-02T01:38:02.336Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -54,7 +55,8 @@
               "RelativeToolTip": "config\\agents.yaml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAADwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
-              "WhenOpened": "2025-04-02T01:38:01.687Z"
+              "WhenOpened": "2025-04-02T01:38:01.687Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -66,7 +68,8 @@
               "RelativeToolTip": "main.py",
               "ViewState": "AgIAAAkAAAAAAAAAAAAAABwAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
-              "WhenOpened": "2025-04-02T01:37:56.337Z"
+              "WhenOpened": "2025-04-02T01:37:56.337Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",

@@ -2,8 +2,8 @@ import os
 from dotenv import load_dotenv
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
-from crewai_tools import FileReadTool
-from a3.tools.custom_tool import GenerateImageTool, RemoveBGTool, FileInsertOrReplaceTool, FileWriteTool
+from crewai_tools import FileReadTool, FileWriterTool
+from a3.tools.custom_tool import GenerateImageTool, RemoveBGTool, FileInsertOrReplaceTool
 from langchain_anthropic import ChatAnthropic
 from langchain_openai import ChatOpenAI
 
@@ -12,7 +12,7 @@ from langchain_openai import ChatOpenAI
 load_dotenv()
 
 def ensure_directories_exist():
-    directories = ['config', 'a4/data', 'a4/javascripts', 'a4/images/backgrounds', 'a4/images/portrait', 'a4/images/weapons']
+    directories = ['config', 'A4/data', 'A4/javascripts', 'A4/images/backgrounds', 'A4/images/portrait', 'A4/images/weapons']
     for dir in directories:
         os.makedirs(dir, exist_ok=True)
 
@@ -43,21 +43,36 @@ class A3:
     # --- Agents 定义 ---
     @agent
     def StoryTellerAgent(self) -> Agent:
-        dalle_llm = ChatOpenAI(  # 这里用 GPT-4-Turbo
-            model="gpt-4-turbo",
+        dalle_llm = ChatOpenAI(  # 这里用 gpt-4o-mini-2024-07-18
+            model="gpt-4o-mini-2024-07-18",
             temperature=0.5,
             openai_api_key=os.getenv("OPENAI_API_KEY")
         )
         return Agent(
             config=self.agents_config['StoryTellerAgent'],
             verbose=True,
-            llm=dalle_llm
+            llm=dalle_llm,
+            tools=[FileWriterTool()]
+        )
+
+    @agent
+    def ImageDesignerAgent(self) -> Agent:
+        dalle_llm = ChatOpenAI(  # 这里用 gpt-4o-mini-2024-07-18
+            model="gpt-4o-mini-2024-07-18",
+            temperature=0.5,
+            openai_api_key=os.getenv("OPENAI_API_KEY")
+        )
+        return Agent(
+            config=self.agents_config['ImageDesignerAgent'],
+            verbose=True,
+            llm=dalle_llm,
+            tools=[FileWriterTool()]
         )
 
     @agent
     def AssetGeneratorAgent(self) -> Agent:
-        dalle_llm = ChatOpenAI(  # 这里用 GPT-4-Turbo
-            model="gpt-4-turbo",
+        dalle_llm = ChatOpenAI(  # 这里用 gpt-4o-mini-2024-07-18
+            model="gpt-4o-mini-2024-07-18",
             temperature=0.5,
             openai_api_key=os.getenv("OPENAI_API_KEY")
         )
@@ -70,8 +85,8 @@ class A3:
 
     @agent
     def BackgroundImageAgent(self) -> Agent:
-        dalle_llm = ChatOpenAI(  # 这里用 GPT-4-Turbo
-            model="gpt-4-turbo",
+        dalle_llm = ChatOpenAI(  # 这里用 gpt-4o-mini-2024-07-18
+            model="gpt-4o-mini-2024-07-18",
             temperature=0.5,
             openai_api_key=os.getenv("OPENAI_API_KEY")
         )
@@ -84,8 +99,8 @@ class A3:
 
     @agent
     def PlayerDeveloperAgent(self) -> Agent:
-        dalle_llm = ChatOpenAI(  # 这里用 GPT-4-Turbo
-            model="gpt-4-turbo",
+        dalle_llm = ChatOpenAI(  # 这里用 gpt-4o-mini-2024-07-18
+            model="gpt-4o-mini-2024-07-18",
             temperature=0.5,
             openai_api_key=os.getenv("OPENAI_API_KEY")
         )
@@ -93,13 +108,13 @@ class A3:
             config=self.agents_config['PlayerDeveloperAgent'],
             verbose=True,
             llm=dalle_llm,
-            tools=[FileReadTool(),FileInsertOrReplaceTool()],
+            tools=[FileReadTool(),FileWriterTool()],
         )
 
     @agent
     def EnemyDeveloperAgent(self) -> Agent:
-        dalle_llm = ChatOpenAI(  # 这里用 GPT-4-Turbo
-            model="gpt-4-turbo",
+        dalle_llm = ChatOpenAI(  # 这里用 gpt-4o-mini-2024-07-18
+            model="gpt-4o-mini-2024-07-18",
             temperature=0.5,
             openai_api_key=os.getenv("OPENAI_API_KEY")
         )
@@ -107,13 +122,13 @@ class A3:
             config=self.agents_config['EnemyDeveloperAgent'],
             verbose=True,
             llm=dalle_llm,
-            tools=[FileReadTool(),FileWriteTool()],
+            tools=[FileReadTool(),FileWriterTool()],
         )
 
     @agent
     def BackgroundManagerAgent(self) -> Agent:
-        dalle_llm = ChatOpenAI(  # 这里用 GPT-4-Turbo
-            model="gpt-4-turbo",
+        dalle_llm = ChatOpenAI(  # 这里用 gpt-4o-mini-2024-07-18
+            model="gpt-4o-mini-2024-07-18",
             temperature=0.5,
             openai_api_key=os.getenv("OPENAI_API_KEY")
         )
@@ -121,13 +136,13 @@ class A3:
             config=self.agents_config['BackgroundManagerAgent'],
             verbose=True,
             llm=dalle_llm,
-            tools=[FileReadTool(),FileWriteTool()],
+            tools=[FileReadTool(),FileWriterTool()],
         )
 
     @agent
     def DialogueWriterAgent(self) -> Agent:
-        dalle_llm = ChatOpenAI(  # 这里用 GPT-4-Turbo
-            model="gpt-4-turbo",
+        dalle_llm = ChatOpenAI(  # 这里用 gpt-4o-mini-2024-07-18
+            model="gpt-4o-mini-2024-07-18",
             temperature=0.5,
             openai_api_key=os.getenv("OPENAI_API_KEY")
         )
@@ -135,13 +150,13 @@ class A3:
             config=self.agents_config['DialogueWriterAgent'],
             verbose=True,
             llm=dalle_llm,
-            tools=[FileReadTool(),FileWriteTool()],
+            tools=[FileReadTool(),FileWriterTool()],
         )
 
     @agent
     def DialogueControllerAgent(self) -> Agent:
-        dalle_llm = ChatOpenAI(  # 这里用 GPT-4-Turbo
-            model="gpt-4-turbo",
+        dalle_llm = ChatOpenAI(  # 这里用 gpt-4o-mini-2024-07-18
+            model="gpt-4o-mini-2024-07-18",
             temperature=0.5,
             openai_api_key=os.getenv("OPENAI_API_KEY")
         )
@@ -149,7 +164,7 @@ class A3:
             config=self.agents_config['DialogueControllerAgent'],
             verbose=True,
             llm=dalle_llm,
-            tools=[FileReadTool(),FileInsertOrReplaceTool()],
+            tools=[FileReadTool(),FileWriterTool()],
         )
 
     # --- Tasks 定义 ---
@@ -158,6 +173,11 @@ class A3:
         return Task(config=self.tasks_config['story_writing_task'])
 
   
+    @task
+    def visual_prompt_design_task(self) -> Task:
+        return Task(config=self.tasks_config['visual_prompt_design_task'])
+
+
     @task
     def background_generation_task(self) -> Task:
         return Task(config=self.tasks_config['background_generation_task'])
@@ -199,17 +219,16 @@ class A3:
                 agents=self.agents,
                 tasks=[
                     self.story_writing_task(),
-                                  
+                    self.visual_prompt_design_task(),
                     self.dialogue_writing_task(),
                     self.dialogue_controller_update_task(),
-                    # self.background_generation_task(),
+                    self.background_generation_task(),
                     self.character_image_generation_task(),
                     self.weapon_image_generation_task(),
 
                     self.image_code_modify_task(),
-                    # self.enemy_code_development_task(),
-                    # self.background_manager_development_task(),
-
+                    self.enemy_code_development_task(),
+                    self.background_manager_development_task(),
                 ],
 
                 process=Process.sequential,
